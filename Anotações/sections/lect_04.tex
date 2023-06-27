@@ -1,0 +1,47 @@
+\lecture{4}{03 Maio 2023}{Reunião 3}
+
+\section{Próximo Passo}
+
+Definir a topologia possível: Identificar e planejar a estrutura da rede em que o ESP32 e os dispositivos consumidores estarão conectados.
+
+Descrever o serviço API: Utilizar a descrição semântica para definir o serviço que será implementado no ESP32.
+
+Traduzir para OpenAPI: Converter a descrição semântica em um documento OpenAPI (openapi.json) que descreve a API de forma padronizada e legível por máquinas.
+
+Gerar o código usando Swagger Codegen: Utilizar a ferramenta Swagger Codegen para gerar automaticamente o stub (esqueleto) do código necessário para implementar o servidor e o cliente da API no ESP32 e nos dispositivos consumidores, respectivamente.
+
+Integrar o stub gerado com o servidor web do ESP32: Incluir o código gerado pelo Swagger Codegen no servidor web do ESP32, que estará esperando por requisições.
+
+Implementar as funções do WoTpy: No código gerado, preencher os stubs com as funções específicas do WoTpy, uma biblioteca para trabalhar com a Web das Coisas (WoT).
+
+Conectar dispositivos consumidores: Os dispositivos consumidores se conectam ao servidor web do ESP32, fazendo requisições e interagindo com o serviço disponibilizado pela API.
+
+O OpenAPI gera 'stubs' de código, mas não o código inteiro. A intenção seria rechear estes 'stubs' com chamadas à métodos do WotPy, trazendo a funcionalidade completa do programa. Parece ser interessante passar o código do WotPy na ferramenta do Prof. Dr. Andre e carregá-lo em meu gerador de código, de tal forma que, com "chamadas semânticas", seja possível gerar as chamadas aos métodos do WotPy na ordem correta com os parâmetros certos...
+
+\begin{itemize}
+    \item \href{https://arxiv.org/pdf/2201.00270.pdf}{Towards a secure API client generator for IoT devices}
+    \item \href{https://ieeexplore.ieee.org/document/9156208}{Deployment of APIs on Android Mobile Devices and Microcontrollers}
+    \item \url{https://openapi-generator.tech/docs/generators/cpp-tiny/}
+\end{itemize}
+
+Servidor gateway IoT: Criar um servidor que atue como gateway IoT, conectando dispositivos, como sensores, à Internet.
+
+Armazenamento de dados: O gateway deve armazenar os dados dos sensores conectados, com um formato não claramente definido.
+
+Disponibilizar dados através de um endpoint SPARQL: O servidor deve disponibilizar os dados armazenados através de um endpoint SPARQL, permitindo consultas e acesso aos dados.
+
+Utilizar a especificação Web of Things (WoT): O gateway deve manter os dados de acordo com a especificação WoT e não utilizar o OpenAPI.
+
+Gerar dados no formato Thing Description (TD) com Thing Scripting: Os dados devem ser gerados e mantidos no formato TD, seguindo o padrão W3C, utilizando a abordagem de Thing Scripting.
+
+José utilizaria um tradutor Web of Things para OpenAPI: Para criar consumidores desses dados, José poderia utilizar um tradutor que converte as descrições de Thing Description para OpenAPI.
+
+Sensores ESP conectados ao gateway: Os sensores ESP devem ser conectados ao gateway, enviando dados para armazenamento e respondendo às solicitações.
+
+Formato de dados semânticos com Thing Description: Os dados devem ser armazenados e disponibilizados no formato semântico definido pela especificação Thing Description.
+
+Implementação compatível com Thing Description: Certificar-se de que o servidor seja compatível com a especificação Thing Description, mesmo que ainda não tenha sido totalmente implementado.
+
+\begin{itemize}
+    \item \url{https://www.sciencedirect.com/science/article/pii/S2542660522001561}
+\end{itemize}

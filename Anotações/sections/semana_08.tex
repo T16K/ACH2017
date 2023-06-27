@@ -1,0 +1,90 @@
+\lecture{8}{05 Junho 2023}{Processo de Comunicação}
+
+\section{Semana 08}
+
+A situação envolve um dispositivo ESP32 equipado com um sensor ML8511 (sensor UV) atuando como cliente, enquanto um computador atua como servidor utilizando a biblioteca WoTPy. 
+
+\begin{itemize}
+    \item Configuração do ESP32 e ML8511: O primeiro passo envolve configurar o ESP32 para coletar dados do sensor ML8511. Isso geralmente envolve escrever um script em MicroPython (ou outro firmware suportado pelo ESP32) para ler dados do sensor ML8511.
+    \item Exposição de Dados via HTTP: Uma vez que os dados estejam sendo coletados corretamente, o ESP32 deve então ser programado para enviar esses dados para o servidor. Isso pode ser realizado através do protocolo HTTP, com o ESP32 atuando como cliente. A comunicação HTTP envolve a criação de um POST request contendo os dados do sensor, que é então enviado para o servidor.
+    \item Configuração do Servidor WoTPy: O próximo passo envolve configurar o servidor no computador utilizando a biblioteca WoTPy. Isso inclui definir uma Thing Description (TD) que descreve os recursos do ESP32 e do sensor ML8511, bem como configurar os servidores HTTP para aceitar as solicitações do cliente ESP32.
+    \item Recepção e Processamento de Dados: Uma vez que o servidor WoTPy está configurado e funcionando, ele pode começar a receber dados do ESP32. Quando uma solicitação POST é recebida, o servidor extrai os dados do sensor do corpo da solicitação, processa esses dados conforme necessário, e atualiza a Thing Description (TD) com as leituras atuais do sensor.
+    \item Interação com a Web of Things (WoT): Com a TD atualizada, outros dispositivos e serviços na Web of Things (WoT) podem agora interagir com o sensor ML8511 por meio do servidor WoTPy. Eles podem ler as últimas leituras do sensor, solicitar atualizações de dados, ou até mesmo enviar comandos para o ESP32, dependendo de como a TD foi configurada.
+\end{itemize}
+
+\subsection{Gateway}
+
+Um gateway na Internet das Coisas (IoT) atua como um ponto de conexão entre a nuvem (ou servidor) e os dispositivos, sensores e atuadores no campo. Em relação ao WoT e WoTPy, o gateway desempenha várias funções essenciais:
+
+Protocol Translation: O gateway IoT pode servir como um tradutor de protocolo, facilitando a comunicação entre dispositivos que usam diferentes protocolos de comunicação. Por exemplo, seu dispositivo ESP32 com sensor ML8511 pode usar HTTP ou MQTT para se comunicar, enquanto outros dispositivos em sua rede podem usar CoAP, WebSocket ou outros protocolos. O gateway WoT pode traduzir entre esses protocolos conforme necessário.
+
+Data Aggregation and Preprocessing: O gateway pode agregar e pré-processar dados de múltiplos dispositivos antes de enviá-los para a nuvem. Isso pode envolver a combinação de dados de vários sensores, a realização de cálculos de nível básico nos dados ou a redução da quantidade de dados enviados para a nuvem.
+
+Device Management: O gateway pode fornecer funcionalidades de gerenciamento de dispositivos, como a configuração de dispositivos, atualizações de firmware ou monitoramento do estado do dispositivo.
+
+Security: O gateway é um ponto crucial para a segurança em uma rede IoT. Ele pode fornecer funções como autenticação e autorização de dispositivos, criptografia de dados e proteção contra ameaças de segurança.
+
+Edge Computing: Alguns gateways podem realizar computação de borda, processando dados localmente em vez de enviá-los para a nuvem. Isso pode melhorar a latência, a privacidade dos dados e a eficiência do uso da largura de banda.
+
+No contexto do sistema ESP32 e ML8511 com WoTPy, o gateway (neste caso, o computador) estará recebendo dados do sensor ML8511 via ESP32, exporá esses dados na Web of Things e fornecerá um ponto de acesso para que outros clientes WoT acessem esses dados.
+
+\subsection{Thing Description}
+
+A "Thing Description" (TD) é um dos elementos fundamentais na arquitetura da Web of Things (WoT). Essencialmente, a TD é uma representação de alto nível do dispositivo ou "Thing" na Web of Things. Ela fornece um conjunto de metadados sobre o dispositivo e descreve suas capacidades em termos de propriedades, ações e eventos.
+
+Metadata: Isso inclui informações gerais sobre o dispositivo, como seu nome, tipo de dispositivo e qualquer outra informação que possa ser útil para os clientes ou para outros dispositivos na rede.
+
+Properties: As propriedades representam o estado atual do dispositivo. Por exemplo, para um sensor de luz, uma propriedade pode ser o valor atual da luz detectada.
+
+Actions: As ações representam as funcionalidades que podem ser executadas no dispositivo. Por exemplo, um dispositivo de luz inteligente pode ter ações como 'ligar' e 'desligar'.
+
+Events: Os eventos representam as notificações ou os alertas que o dispositivo pode enviar. Por exemplo, um sensor de temperatura pode enviar um evento quando a temperatura ultrapassa um determinado limite.
+
+A Thing Description é formatada como um documento JSON-LD, o que significa que ela pode ser facilmente lida por humanos e máquinas, e pode ser incorporada em uma variedade de sistemas. A TD permite que os dispositivos IoT se comuniquem e interajam entre si, independentemente do protocolo de rede ou da tecnologia subjacente que eles utilizam.
+
+No contexto do sistema usando o ESP32 e o sensor ML8511, seria criado uma Thing Description para representar o sensor ML8511, incluindo metadados sobre o sensor e descrevendo suas propriedades (como o valor atual do UV), possíveis ações (se houver) e quaisquer eventos que o sensor possa emitir.
+\lecture{8}{05 Junho 2023}{Processo de Comunicação}
+
+\section{Semana 08}
+
+A situação envolve um dispositivo ESP32 equipado com um sensor ML8511 (sensor UV) atuando como cliente, enquanto um computador atua como servidor utilizando a biblioteca WoTPy. 
+
+\begin{itemize}
+    \item Configuração do ESP32 e ML8511: O primeiro passo envolve configurar o ESP32 para coletar dados do sensor ML8511. Isso geralmente envolve escrever um script em MicroPython (ou outro firmware suportado pelo ESP32) para ler dados do sensor ML8511.
+    \item Exposição de Dados via HTTP: Uma vez que os dados estejam sendo coletados corretamente, o ESP32 deve então ser programado para enviar esses dados para o servidor. Isso pode ser realizado através do protocolo HTTP, com o ESP32 atuando como cliente. A comunicação HTTP envolve a criação de um POST request contendo os dados do sensor, que é então enviado para o servidor.
+    \item Configuração do Servidor WoTPy: O próximo passo envolve configurar o servidor no computador utilizando a biblioteca WoTPy. Isso inclui definir uma Thing Description (TD) que descreve os recursos do ESP32 e do sensor ML8511, bem como configurar os servidores HTTP para aceitar as solicitações do cliente ESP32.
+    \item Recepção e Processamento de Dados: Uma vez que o servidor WoTPy está configurado e funcionando, ele pode começar a receber dados do ESP32. Quando uma solicitação POST é recebida, o servidor extrai os dados do sensor do corpo da solicitação, processa esses dados conforme necessário, e atualiza a Thing Description (TD) com as leituras atuais do sensor.
+    \item Interação com a Web of Things (WoT): Com a TD atualizada, outros dispositivos e serviços na Web of Things (WoT) podem agora interagir com o sensor ML8511 por meio do servidor WoTPy. Eles podem ler as últimas leituras do sensor, solicitar atualizações de dados, ou até mesmo enviar comandos para o ESP32, dependendo de como a TD foi configurada.
+\end{itemize}
+
+\subsection{Gateway}
+
+Um gateway na Internet das Coisas (IoT) atua como um ponto de conexão entre a nuvem (ou servidor) e os dispositivos, sensores e atuadores no campo. Em relação ao WoT e WoTPy, o gateway desempenha várias funções essenciais:
+
+Protocol Translation: O gateway IoT pode servir como um tradutor de protocolo, facilitando a comunicação entre dispositivos que usam diferentes protocolos de comunicação. Por exemplo, seu dispositivo ESP32 com sensor ML8511 pode usar HTTP ou MQTT para se comunicar, enquanto outros dispositivos em sua rede podem usar CoAP, WebSocket ou outros protocolos. O gateway WoT pode traduzir entre esses protocolos conforme necessário.
+
+Data Aggregation and Preprocessing: O gateway pode agregar e pré-processar dados de múltiplos dispositivos antes de enviá-los para a nuvem. Isso pode envolver a combinação de dados de vários sensores, a realização de cálculos de nível básico nos dados ou a redução da quantidade de dados enviados para a nuvem.
+
+Device Management: O gateway pode fornecer funcionalidades de gerenciamento de dispositivos, como a configuração de dispositivos, atualizações de firmware ou monitoramento do estado do dispositivo.
+
+Security: O gateway é um ponto crucial para a segurança em uma rede IoT. Ele pode fornecer funções como autenticação e autorização de dispositivos, criptografia de dados e proteção contra ameaças de segurança.
+
+Edge Computing: Alguns gateways podem realizar computação de borda, processando dados localmente em vez de enviá-los para a nuvem. Isso pode melhorar a latência, a privacidade dos dados e a eficiência do uso da largura de banda.
+
+No contexto do sistema ESP32 e ML8511 com WoTPy, o gateway (neste caso, o computador) estará recebendo dados do sensor ML8511 via ESP32, exporá esses dados na Web of Things e fornecerá um ponto de acesso para que outros clientes WoT acessem esses dados.
+
+\subsection{Thing Description}
+
+A "Thing Description" (TD) é um dos elementos fundamentais na arquitetura da Web of Things (WoT). Essencialmente, a TD é uma representação de alto nível do dispositivo ou "Thing" na Web of Things. Ela fornece um conjunto de metadados sobre o dispositivo e descreve suas capacidades em termos de propriedades, ações e eventos.
+
+Metadata: Isso inclui informações gerais sobre o dispositivo, como seu nome, tipo de dispositivo e qualquer outra informação que possa ser útil para os clientes ou para outros dispositivos na rede.
+
+Properties: As propriedades representam o estado atual do dispositivo. Por exemplo, para um sensor de luz, uma propriedade pode ser o valor atual da luz detectada.
+
+Actions: As ações representam as funcionalidades que podem ser executadas no dispositivo. Por exemplo, um dispositivo de luz inteligente pode ter ações como 'ligar' e 'desligar'.
+
+Events: Os eventos representam as notificações ou os alertas que o dispositivo pode enviar. Por exemplo, um sensor de temperatura pode enviar um evento quando a temperatura ultrapassa um determinado limite.
+
+A Thing Description é formatada como um documento JSON-LD, o que significa que ela pode ser facilmente lida por humanos e máquinas, e pode ser incorporada em uma variedade de sistemas. A TD permite que os dispositivos IoT se comuniquem e interajam entre si, independentemente do protocolo de rede ou da tecnologia subjacente que eles utilizam.
+
+No contexto do sistema usando o ESP32 e o sensor ML8511, seria criado uma Thing Description para representar o sensor ML8511, incluindo metadados sobre o sensor e descrevendo suas propriedades (como o valor atual do UV), possíveis ações (se houver) e quaisquer eventos que o sensor possa emitir.

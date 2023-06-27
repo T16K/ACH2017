@@ -1,0 +1,17 @@
+\lecture{10}{19 Junho 2023}{Atualização nos programas}
+
+\section{Semana 10}
+
+\url{https://github.com/agmangas/wot-py/commit/a7cf9b8aa81d871dbe9264730f5ad88dfcfc60b9}
+
+\subsection{boot.py}
+
+Removi a inicialização do webrepl, pois não incluí a biblioteca correspondente no ESP32.
+
+\subsection{main.py}
+
+Adicionei uma verificação para o status da resposta HTTP após o envio dos dados. Se o status estiver entre 200 e 299, o sistema imprimirá uma mensagem de sucesso. Além disso, o intervalo de sleep está configurado para 10 segundos.
+
+\subsection{server.py}
+
+Incorporei mais dois endpoints, /uvValue e /favicon.ico. O endpoint /uvValue devolve a última leitura UV armazenada no formato JSON e o /favicon.ico é usado para gerir solicitações de favicon feitas pelos navegadores. Adicionalmente, a página HTML gerada pelo GET no endpoint /uv agora inclui um script JavaScript para atualizar a leitura UV automaticamente a cada 2 segundos.

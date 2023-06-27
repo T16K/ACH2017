@@ -1,0 +1,40 @@
+\lecture{7}{31 Maio 2023}{Servidor WoT}
+
+\section{Semana 07}
+
+O Wotpy é uma implementação do protocolo Web of Things (WoT) da W3C. A biblioteca foi escrita em Python e é compatível com Python 3.7 ou superior. A princípio, é possível executar essa biblioteca em qualquer ambiente onde possa executar Python. No entanto, é importante lembrar que algumas bibliotecas Python podem ter dependências de sistema que não estão disponíveis em todas as plataformas.
+
+O MicroPython é uma versão compacta do Python 3 projetada para rodar em microcontroladores como o ESP32. Embora seja muito poderoso e flexível, ele não suporta todas as bibliotecas e recursos do Python completo devido à limitações de memória e processamento de microcontroladores.
+
+A biblioteca Wotpy parece ser bastante complexa e pode exigir recursos que não estão disponíveis no MicroPython. Portanto, é possível que você não consiga instalar e executar essa biblioteca no MicroPython no ESP32.
+
+\subsection{Servidor ESP32}
+
+Para confirmar a compatibilidade, tentei instalar a biblioteca diretamente no ambiente MicroPython, usando o \textit{rshell} para transferir o arquivo \textit{setup.py} do WoTPy. Este arquivo é usado para instalar a biblioteca em um ambiente Python completo. No entanto, esse arquivo não foi adequado para ser carregado diretamente para o ESP32.
+
+Por isso, tentei modificar a biblioteca para torná-la compatível com o MicroPython. Mas seria um processo complexo e que consumiria muito tempo. Aqui estão algumas considerações:
+
+\begin{itemize}
+    \item Dependências: As dependências de uma biblioteca devem ser compatíveis com o MicroPython. Muitas bibliotecas Python padrão, como jsonschema e tornado no caso do wotpy, não funcionam no MicroPython devido a suas complexidades e ao uso de recursos que não estão disponíveis nos microcontroladores. Seria preciso encontrar ou criar versões alternativas dessas bibliotecas que sejam compatíveis com o MicroPython.
+    \item Recursos: As bibliotecas Python padrão podem usar recursos e módulos que não estão disponíveis no MicroPython, como threading ou multiprocessing. Seria preciso reescrever partes da biblioteca para não usar esses recursos, ou encontrar maneiras alternativas de implementar a mesma funcionalidade.
+    \item Tamanho da memória: O MicroPython é projetado para dispositivos com recursos de memória limitados. Portanto, precisaria garantir que sua biblioteca não consuma muita memória. Isso pode envolver reescrever partes da biblioteca para ser mais eficiente em termos de memória.
+    \item Testes: Depois de modificar a biblioteca, precisaria testá-la extensivamente para garantir que ainda funcione como esperado. Isso pode ser difícil, pois os erros podem ser menos previsíveis e mais difíceis de depurar no MicroPython do que no Python padrão.
+\end{itemize}
+
+Dada a complexidade envolvida na modificação da biblioteca para torná-la compatível com o MicroPython, geralmente é mais fácil procurar bibliotecas alternativas que já são compatíveis ou projetadas especificamente para o MicroPython.
+
+O ESP32 é um dispositivo de hardware limitado e pode não ser capaz de lidar com a complexidade da implementação completa de uma biblioteca como o wotpy. Em alguns casos, pode ser mais apropriado usar um dispositivo mais poderoso, como um Raspberry Pi, que pode executar o Python padrão.
+
+\subsection{Cliente ESP32}
+
+Usar o ESP32 como cliente em uma configuração de Internet das Coisas (IoT), com um servidor mais poderoso rodando o wotpy ou outra implementação do protocolo WoT.
+
+\begin{itemize}
+    \item  Configurar o servidor WoT: Configurar um servidor WoT em um dispositivo que suporte Python completo, como um computador. Este servidor poderia rodar o wotpy ou outra implementação do protocolo WoT.
+    \item Definir a interação com o ESP32: Descrever as interações que você deseja ter com o ESP32 na forma de "Thing Description" (TD) do WoT. Isso pode incluir a leitura de valores de sensores no ESP32, o controle de atuadores ligados ao ESP32, etc.
+    \item Implementar o cliente no ESP32: Em seguida, precisaria implementar o cliente no ESP32 usando o MicroPython. Esse cliente se comunicaria com o servidor WoT para ler ou escrever valores conforme definido na TD.
+\end{itemize}
+
+Como o ESP32 está rodando o MicroPython, você terá que usar bibliotecas que sejam compatíveis com o MicroPython. Para se comunicar com o servidor WoT, vou usar o HTTP, que é suportados pelo MicroPython.
+
+No entanto, essa abordagem significa que a funcionalidade do ESP32 será limitada àquela definida pelo servidor WoT. O ESP32 basicamente atuaria como um dispositivo de borda ou um nó de sensor em uma rede de IoT, com o servidor WoT fornecendo a principal funcionalidade de aplicativo.

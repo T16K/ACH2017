@@ -1,0 +1,44 @@
+\lecture{4}{03 Maio 2023}{Exemplos de Uso}
+
+\section{Semana 04}
+
+Para estudar os exemplos do wotpy, utilizei o comando docker para executar a imagem. O diretório "asdf" foi escolhido arbitrariamente, enquanto "64bf8cf085ff" representa a identificação da imagem. É importante lembrar de garantir que o Docker esteja em execução, utilizando o comando "systemctl start docker".
+
+\begin{verbatim}
+    docker container run -ti --rm -v $PWD:/asdf 64bf8cf085ff sh
+\end{verbatim}
+
+\subsection{temperature}
+
+Arquivo \textbf{server.py} (Simulação de Temperatura)
+
+Este é um servidor Web das Coisas (WoT) que expõe uma entidade simulada de temperatura com duas propriedades e um evento.
+
+O servidor WoT de temperatura expõe uma entidade com as seguintes propriedades e evento:
+
+\textbf{Propriedade temperature}: um número de ponto flutuante que representa a temperatura simulada, com somente leitura e observável.
+\textbf{Propriedade high-temperature-threshold}: um número de ponto flutuante que representa o limite superior da temperatura, observável e pode ser alterado.
+\textbf{Evento high-temperature}: acionado quando a temperatura simulada ultrapassa o limite superior definido.
+Para acessar a entidade WoT e suas propriedades, você pode fazer uma solicitação HTTP GET para a seguinte URL: \url{http://localhost:9494/properties/temperature}. Isso retornará a temperatura simulada atual em formato JSON.
+
+Para definir o limite superior da temperatura, você pode fazer uma solicitação HTTP PUT para a seguinte \url{URL: http://localhost:9494/properties/high-temperature-threshold}. Inclua o valor do limite superior no corpo da solicitação em formato JSON.
+
+O servidor WoT de temperatura também permite a comunicação bidirecional usando WebSocket. Para se conectar ao servidor WebSocket, abra uma conexão WebSocket para \url{ws://localhost:9393}.
+
+Uma vez conectado, você pode enviar mensagens para atualizar as propriedades ou receber notificações quando o evento "high-temperature" é acionado. 
+
+\subsection{subscriber}
+
+Arquivo \textbf{client.py} (Inscrição)
+
+Este é um cliente WoT que consome uma entidade WoT a partir de sua URL de descrição de coisa (Thing Description URL) e se inscreve em todas as propriedades e eventos observáveis da entidade consumida.
+
+Execute o seguinte comando para iniciar o cliente:
+
+\begin{verbatim}
+    python wot_client.py --url <thing_description_url> --time <total_subscription_time>
+\end{verbatim}
+
+Substitua $<thing_description_url>$ pela URL da descrição da coisa que deseja consumir e $<total_subscription_time>$ pelo tempo total de inscrição em segundos.
+
+O cliente WoT de inscrição irá consumir a entidade WoT, se inscrever em todas as propriedades e eventos observáveis e imprimir os valores recebidos em tempo real. O cliente permanecerá inscrito por um período de tempo especificado pelo argumento --time.

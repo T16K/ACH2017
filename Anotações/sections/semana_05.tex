@@ -1,0 +1,49 @@
+\lecture{5}{10 Maio 2023}{Especificações e Dependências}
+
+\section{Semana 05}
+
+\subsection{Especificações do W3C-WoT}
+
+\url{https://www.w3.org/TR/wot-architecture11/}
+
+\url{https://www.w3.org/TR/wot-usecases/}
+
+\url{https://www.w3.org/TR/wot-thing-description/}
+
+WoT Thing Description [\href{https://www.w3.org/TR/wot-thing-description11/}{WOT-THING-DESCRIPTION}]: fornece um formato de dados legível por máquina para descrever a metadados e interfaces voltadas para a rede de Things.
+
+WoT Binding Templates [\href{https://www.w3.org/TR/wot-binding-templates/}{WOT-BINDING-TEMPLATES}]: oferece diretrizes informativas sobre como definir interfaces voltadas para a rede em Things para protocolos específicos e ecossistemas IoT.
+
+WoT Discovery [\href{https://www.w3.org/TR/wot-discovery/}{WOT-DISCOVERY}]: define um mecanismo de distribuição para metadados WoT (Thing Descriptions).
+
+WoT Scripting API [\href{https://www.w3.org/TR/wot-scripting-api/}{WOT-SCRIPTING-API}]: habilita a implementação da lógica de aplicação de um Thing usando uma API JavaScript comum semelhante às APIs do navegador da Web.
+
+WoT Security and Privacy Guidelines [\href{https://www.w3.org/TR/wot-security/}{WOT-SECURITY}]: fornece diretrizes para a implementação segura e configuração de Things e discute questões que devem ser consideradas em sistemas que implementam a W3C WoT.
+
+\subsection{Dependências do W3C-WoTPy}
+
+O arquivo setup.py define um conjunto de dependências de terceiros necessárias para a execução da biblioteca WotPy. Algumas dessas dependências são obrigatórias, enquanto outras são opcionais e só serão instaladas se estiverem disponíveis no sistema.
+
+A seguir, estão as principais dependências definidas no arquivo setup.py:
+
+tornado: uma biblioteca assíncrona usada para criar aplicativos Web em Python. É usada pela WotPy para criar servidores HTTP e WebSocket.
+
+jsonschema: uma biblioteca que valida esquemas JSON e os dados JSON correspondentes. A WotPy usa essa biblioteca para validar as descrições de coisa (Thing Descriptions) recebidas e produzidas.
+
+six: uma biblioteca que permite escrever código Python 2 e Python 3 compatível com ambos os ambientes. É usada pela WotPy para garantir a compatibilidade com as duas versões do Python.
+
+rx: uma biblioteca de programação reativa que permite escrever código que responde a mudanças de estado de forma assíncrona. É usada pela WotPy para suportar a API WoT Scripting e as interações com as propriedades e eventos observáveis.
+
+python-slugify: uma biblioteca que converte strings para "slug", um formato de texto que usa somente caracteres ASCII, números e traços. É usada pela WotPy para criar identificadores únicos para as coisas.
+
+Existem também algumas dependências opcionais que a WotPy usa se estiverem instaladas no sistema:
+
+aiocoap: uma biblioteca Python para o protocolo de transferência de dados Constrained Application Protocol (CoAP), usada pela WotPy para suportar o protocolo CoAP.
+
+hbmqtt: uma biblioteca Python para implementar o protocolo Message Queue Telemetry Transport (MQTT), usada pela WotPy para suportar o protocolo MQTT.
+
+websockets: uma biblioteca Python para suportar a comunicação WebSocket, usada pela WotPy para suportar o protocolo WebSocket.
+
+zeroconf: uma biblioteca Python para suportar o protocolo DNS Service Discovery (DNS-SD), usada pela WotPy para descobrir serviços e dispositivos na rede.
+
+Essas dependências são verificadas em tempo de execução e adicionadas ao conjunto de dependências, se estiverem disponíveis no sistema.

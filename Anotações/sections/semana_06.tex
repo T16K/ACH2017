@@ -1,0 +1,95 @@
+\lecture{6}{17 Maio 2023}{ESP32}
+
+\section{Semana 06}
+
+\subsection{Sensor Solar}
+
+\url{https://t16k-ach2157.readthedocs.io/en/latest/}
+
+Antes de começar, serão necessários os seguintes componentes:
+\url{https://github.com/T16K/ACH2157#lista-de-materiais}
+\begin{itemize}
+    \item Sensor UV ML8511
+    \item Microcontrolador ESP32
+    \item Jumpers e protoboard para a conexão
+    \item Ambiente de desenvolvimento Python configurado com WoTPy
+\end{itemize}
+
+Conectar o sensor UV ML8511 ao ESP32: 
+\url{https://github.com/T16K/ACH2157#conex%C3%B5es}
+\begin{itemize}
+    \item GND (ML8511) para GND (ESP32)
+    \item VCC (ML8511) para 3V3 (ESP32)
+    \item OUT (ML8511) para um pino analógico 34 (ESP32)
+\end{itemize}
+
+Instalar a biblioteca do WoTPy.
+\url{https://github.com/T16K/wot-py}
+
+Escrever um código que leia os dados do sensor UV ML8511 e os exiba no ESP32, usando a linguagem de programação MicroPython, que é uma versão do Python 3 otimizada para microcontroladores como o ESP32.
+\url{https://t16k-ach2157.readthedocs.io/en/latest/comp/esp.html#introduzindo-o-micropython}
+
+Usar o WoTPy para expor os dados do sensor UV como um "Thing" na Web of Things. Isso permitirá que outros dispositivos e aplicações IoT interajam com seu sensor UV de maneira padronizada.
+
+Testar as configuração para garantir que tudo esteja funcionando corretamente. É possível fazer isso usando o WoTPy para descobrir o sensor UV na rede e lendo os dados do sensor.
+
+\subsection{Expor os Dados do Sensor}
+
+Para expor os dados do sensor usando WoTPy, criar um Thing que represente o sensor. Cada Thing tem um conjunto de propriedades, ações e eventos que descrevem suas capacidades. Neste caso, criar uma propriedade para representar o valor lido do sensor UV.
+
+Adicionar o WoTPy para expor esse valor como uma propriedade em um Thing. Exemplo simplificado:
+ 
+\begin{lstlisting}[breaklines]
+from wotpy.wot.servient import Servient
+from wotpy.wot.thing import Thing
+from wotpy.wot.forms import Form
+from wotpy.protocols.http.server import HTTPServer
+
+# Crie um novo Thing
+uv_sensor_thing = Thing(id="urn:dev:ops:uv-sensor-1234", title="UV Sensor")
+
+# Adicione uma propriedade ao Thing para representar o valor do sensor UV
+uv_sensor_thing.add_property(name="uvValue", description={"@type": "number", "unit": "UV Index"}, value=0, forms=[Form(href="/uvValue", op="readproperty")])
+
+# Este valor sera atualizado pelo seu codigo de leitura de sensor
+
+# Crie um servient e adicione o Thing
+servient = Servient()
+servient.add_thing(uv_sensor_thing)
+
+# Inicie o servidor HTTP para expor o Thing na rede
+http_server = HTTPServer(port=8080)
+http_server.start(servient)
+
+# Agora o Thing esta disponivel em http://localhost:8080/uvValue
+\end{lstlisting}
+
+Este é um exemplo simplificado. Em um caso real, provavelmente teria que adicionar um loop que continuamente lê o valor do sensor UV e atualiza a propriedade uvValue.
+
+Além disso, precisaria adicionar segurança e manipulação de erros apropriadas. Por exemplo, restringir o acesso à propriedade uvValue para apenas certos dispositivos ou usuários.
+
+Finalmente, configurar o seu ESP32 para que ele envie os dados do sensor para o servidor WoTPy, possivelmente através de um protocolo como MQTT ou HTTP.
+
+\subsection{cliente HTTP}
+
+É necessário definir primeiro o tipo de entidade no nosso contexto: cliente ou servidor.
+
+No caso de um servidor, a instalação do WoTPy é necessária. Note que para esta configuração, não há necessidade de um gateway.
+
+Já para um cliente, um gateway se torna essencial. Este atua como intermediário entre o ESP32 e o mundo externo, facilitando a comunicação entre os dois.
+
+Para comunicar os valores do sensor ML8511 usando o ESP32 e o WoTPy:
+
+Leitura do sensor ML8511 com o ESP32: Primeiro, configurar o ESP32 para ler os valores do sensor ML8511. Programando o ESP32 com um código que lê os valores do sensor a intervalos regulares. Este código será executado no ambiente de desenvolvimento \textbf{MicroPython}.
+
+Servidor no ESP32: O ESP32 é programado para funcionar como um servidor WoT. Ele expõe a propriedade que representa o valor do sensor ML8511 através de um protocolo de rede, como HTTP.
+
+Comunicação de valores do sensor: Sempre que o ESP32 lê um valor do sensor, ele atualiza a propriedade do sensor no servidor WoT. Dependendo da sua implementação, isso pode envolver o envio de um POST request ao servidor WoTPy ou atualizar o valor localmente se o servidor WoT estiver sendo executado no próprio ESP32.
+
+Criação de um Thing WoTPy para representar o sensor: No servidor WoTPy, criar um Thing que represente o sensor ML8511, utilizando a biblioteca WoTPy Python. O Thing deve ter uma propriedade que represente o valor atual do sensor.
+
+Atualização do valor do sensor no Thing WoTPy: Cada vez que o ESP32 enviar um novo valor do sensor para o servidor WoTPy, atualizar o valor da propriedade no Thing WoTPy que representa o sensor. Isto pode ser feito manipulando a requisição POST que o ESP32 envia e atualizando o valor da propriedade apropriadamente.
+
+Exposição do Thing WoTPy na rede: Finalmente, você configurar o WoTPy para expor o Thing na rede. Isto permitirá que outros dispositivos e serviços descubram o Thing e leiam o valor do sensor.
+
+Interagindo com o Thing: Os clientes na rede, que também podem ser implementados usando o WoTPy ou qualquer outra biblioteca que suporte o padrão WoT, podem agora interagir com o Thing. Eles podem ler o valor atual do sensor, assinar atualizações de valor e, se suportado, acionar ações no Thing.

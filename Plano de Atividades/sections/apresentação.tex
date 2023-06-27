@@ -1,0 +1,70 @@
+\chapter{Apresentação do Problema}
+
+% (Texto descrevendo o contexto e o problema abordado no TCC.)
+
+% Interesse dos orientadores
+Há alguns anos os orientadores colaboram, atuando com dispositivos (computacionais) físicos, Internet e Web Semântica, tendo orientado trabalhos de Iniciação Científica e de Conclusão de Curso. Do ponto de vista dos orientadores, que receberam um orientando interessado em desenvolver trabalho neste assunto, o ponto passa a ser \textit{onde aplicar a capacidade de trabalho do orientando em assuntos de interesse dos orientadores de maneira a dar alguma contribuição no assunto}. 
+
+% Referências a partir das quais o texto é escrito
+Com a intenção de fornecer referências fixas para elaboração deste plano de atividades, algumas escolhas de termos e conceitos serão feitas sem considerações detalhadas que, acredita-se, não são pertinentes ao escopo deste plano de atividades.
+
+Web das Coisas (\textit{Web of Things}) é um termo criado por volta de 2007 e tem várias interpretações. Atualmente é definido pelo World Wide Web Consortium (W3C) como:
+
+\textit{The Web of Things includes sensors and actuators, physical objects and locations, and even people. The Web of Things is essentially about the role of Web technologies to facilitate the development of applications and services for things and their virtual representation. Some relevant Web technologies include HTTP for accessing RESTful services, and for naming objects as a basis for linked data and rich descriptions, and JavaScript APIs for virtual objects acting as proxies for real-world objects. Key benefits for doing this work at W3C include the W3C emphasis on ensuring that W3C standards can be implemented royalty free, thereby encouraging innovation, and the availability of the large community of web developers. Standards are needed to realize the economic and human potential, and to avoid the risk of fragmentation cased by a plethora of non-interoperable proprietary solutions.
+} \cite{WoTTerminology}, \cite{WoTCommunityWiki}
+
+Em tradução livre, \textit{a Web das Coisas inclui sensores e atuadores, objetos físicos e locais e mesmo pessoas. A Web das Coisas é essencialmente sobre o papel das tecnologias Web na facilitação do desenvolvimento de aplicações e serviços para coisas e sua representação (no ambiente) virtual. Algumas tecnologias Web relevantes incluem HTTP para acessar serviços RESTful e para nomear objetos, como uma base para dados ligados e descrições (semanticamente) ricas e interfaces JavaScript para objetos virtuais que agem como representações de objetos do mundo real. Os benefícios deste trabalho realizado pela W3C incluem a ênfase que as normas possam ser implementadas sem necessidade de pagamento de royalties, portanto, encorajando inovação, e a disponibilidade de uma grande comunidade de desenvolvedores web. Normas são necessárias para viabilizar o potencial econômico e humano e evitar o risco de fragmentação causado pela proliferação de soluções proprietárias não interoperáveis}.
+
+A escolha dessa definição para Web das Coisas tem como consequência a adesão, no mínimo parcial, a um conjunto de padrões criados pelo W3C, então cabe analisar se esta escolha é conveniente.
+
+Nessa definição está implícito o desejo de interconectar sensores, atuadores, objetos físicos, locais e pessoas através de uma rede (um sistema de informação). É possível especular sobre consequências da implantação da tal rede, por exemplo seu impacto econômico, como fez a consultoria McKinsey em 2015 \cite{manyika2015}. 
+
+Considerando os desafios técnicos e os interesses econômicos, é de se esperar que, em contraposição à formação de um consórcio para chegar a uma solução (tecnológica) consensual, diferentes organizações criarão (como criaram) suas próprias redes, abordando casos (exemplos, testes) que têm especificidades, propondo soluções particulares a problemas. Fazer essas redes interoperar, em diversos níveis, como compartilhar observações de sensores, compartilhar sensores, séries históricas de dados, análises de séries históricas, ... é um grande desafio que é citado em \cite{Stirbu2008} \cite{Gyrard2017}. \cite{GARCIAMANGAS2019235}, \cite{OpenApíWoT2021}. A persistência desse desafio ao longo do tempo indica que, apesar das várias propostas de soluções e ``normas'', não há consenso em todos os aspectos.
+
+Neste cenário, nota-se que o W3C declara ser uma comunidade internacional de organizações-membro. A missão do W3C é desenvolver o potencial da World Wide Web (WWW) através da criação de normas através de um processo baseado em consenso e alimentado pelas contribuições de seus membros. (Composição da informação em \cite{W3CAbout}, \cite{W3CFacts}, \cite{W3CMission}). Várias empresas e pesquisadores (citados nos artigos acima) contribuem ou contribuíram para o W3C.
+
+É possível confiar que as propostas, recomendações e normas do W3C contenham elementos que já estão em uso, tenham boa abrangência, devido ao processo de criação, e que persistam com o passar do tempo, apesar da certeza que as tecnologias, como HTTP, REST, JavaScript, tornar-se-ão obsoletas em algum momento. 
+
+As atividades do W3C em torno da Web das Coisas definem, até certo ponto, a arquitetura para a Web das Coisas  \cite{Matsukura:23:WTA} e já conta com ferramentas que usam e implementam essa arquitetura \cite{WoTDevTools}.
+
+Considerando que o argumento acima indique grande uso, abrangência, persistência, informação, documentação e quantidadade de ferramentas disponíveis, conclui-se que convém seguir, mesmo que parcialmente, o conceito de Web das Coisas proposto pelo W3C.\footnote{Neste ponto do texto, acredita-se que esteja claro que interoperabilidade entre redes IoT ainda é um desafio, que interoperabilidade pode se dar em vários níveis e que é conveniente seguir as recomendações do W3C.}
+\footnote{Interoperabilidade, como tema amplo, é citado como um dos grandes desafios na área de Sistemas de Informação \cite{grandsi}} Cabe agora estreitar o escopo do trabalho para chegar ao objetivo.
+
+% Parti de um conceito, cheguei a um conjunto de recomendações...
+
+% Por outro lado, todos autores dos artigos citados no parágrafo anterior concordam que deve existir um ou mais agentes encarregados de traduzir protocolos e, desta forma, implementar interoperabilidade. Esses agentes, geralmente, são designados \textit{gateways}.
+
+% Outros aspectos como segurança, privacidade, ... também estão presentes
+
+
+
+% como fez Tim Berners-Lee, quando propôs a Web Semântica \cite{bernerslee2001semantic}
+
+A arquitetura para Web das Coisas \cite{Matsukura:23:WTA} destaca os elementos que fazem parte da rede, e sua interconexão. Tal arquitetura pode ser detalhada em vários sentidos, por exemplo, definindo como esses elementos são organizados e, caso sejam dispositivos computacionais, o que é executado neles. Entretanto, aparentemente, o foco do W3C, está no (re)uso da infraestrutura e dos protocolos criados para Internet. Consequentemente, a coleção de exemplos de aplicação da Web das Coisas, apresentada na seção 4 e os padrões (\textit{pattern}) usados para implantação trazem poucos detalhes, mas o protocolo de comunicação entre os dispositivos é detalhado até o conteúdo, codificado no protocolo JSON, da requisição POST, codificada no protocolo HTTP, trocada entre dispositivos \cite{McCool:23:WTT}.
+
+Nota-se que, exceto em aplicações muito simples, a arquitetura prevê a existência de dispositivos na fronteira entre a rede interna e a rede externa (Internet), região frequentemente referenciada como borda (\textit{edge}) \cite{EdgeComputing}. A computação realizada em dispositivos de borda frequentemente é denominada \textit{fog computing} \cite{FogComputing}. Pela proximidade com os sensores e atuadores, que frequentemente são limitados em capacidade de computação, disponibilidade de energia, tamanho, acesso físico direto, entre outras, a maioria das propostas e implementações, quando preocupam-se com interoperabilidade entre dispositivos, implementam esta característica no dispositivo de borda \cite{Stirbu2008} \cite{Gyrard2017}. \cite{GARCIAMANGAS2019235} que frequentemente é denominado \textit{gateway}. 
+
+Por sua posição na rede, o \textit{gateway} é o dispositivo onde a maioria dos desenvolvedores implementa, além da interoperabilidade entre dispositivos, privacidade e segurança de dados, descoberta de dispositivos, interfaces (básicas) com o usuário. Desta forma, o \textit{gateway} é uma plataforma necessária, talvez essencial, para a construção de serviços baseados em dispositivos e nos dados gerados por estes.
+
+% Um projeto que teve relativo sucesso é Mozilla Web of Things \cite{MozillaIoT}. Um artigo escrito no escopo do projeto Mozilla Web of Things \cite{MozillaIoTPrivacy} bem a preocupação com privacidade e segurança que emerge quando  o \textit{gateway} é mantido por empresas. Infelizmente em 2020 a Fundação Mozilla deixou o projeto \cite{MozillaIoTDisengage}, o que fez o projeto perder tração.
+
+% (\textbf{nota 4}: Na época em que o projeto Mozilla Web of Things perdeu tração, havia dois alunos na EACH com TCC em andamento e que pretendiam usar MozWoT).
+
+Resultados preliminares do projeto de Iniciação Científica voluntária ``Uma avaliação sobre gateways IoT e sua integração com Web Semântica'', de Daniel Macris, em desenvolvimento na EACH, atraíram atenção para um arcabouço para desenvolvimento de objetos na Web das Coisas, um desses objetos são \textit{gateways}, chamado WotPy \cite{GARCIAMANGAS2019235}. Este arcabouço foi criado no ambiente acadêmico (em contraposição a grandes comunidades ou empresas), com a intenção declarada de implementar as recomendações W3C (em contraposição a atender um determinado nicho, como domótica), implementa vários protocolos de comunicação com dispositivos como HTTP, MQTT, CoAP, é codificado em Python, encapsulado com Docker, aparentemente, não é muito extenso, e é citada na lista de aplicações para Web das Coisas da W3C \cite{WoTDevTools}. Entretanto, há dificuldade para instalação e operação na plataforma testada por Daniel.
+
+Gustavo Ariga desenvolveu, como projeto na disciplina ACH2157-Computação Física, o projeto Protetor Solar \cite{ProtetorSolar}, onde ganhou familiaridade com dispositivos baseados no microcontrolador ESP32 e programados em MicroPython e com comunicação baseada no protocolo HTTP, tem experiência com Docker.
+
+Há um bom ajuste entre as habilidade de Gustavo Ariga com as necessidades para criar uma nova versão de WotPy, resolvendo as dificuldades levantadas por Daniel. WotPy contém um conjunto de testes, então o indicador de sucesso é passar nos testes. Acredito que isso seja feito em um ou dois meses. No restante do semestre, gostaria que Gustavo ajustasse a comunicação do dispositivo Protetor Solar (ou similar) para que a comunicação (handshake de publicação de capacidades e transmissão de observações) fosse feita dentro da recomendação W3C-WoT. 
+
+Supondo que este TCC atinja completo sucesso, no semestre seguinte (2023-2), Gustavo explorará a integração de WotPy com grafos de conhecimento em uma área denominada \textit{Semantic Web of Things - SWoT} \cite{Scioscia2009} \cite{Jara2014SWoT}. Os conceitos em que se baseia essa área e a justificativa para o trabalho serão detalhados no plano de atividades do próximo semestre. Nesta ocasião os resultados das atividades propostas no presente plano estarão determinados o que permitirá detalhar os passos do plano do próximo semestre com melhor qualidade. Neste momento, o que se antevê é:
+
+\begin{itemize}
+\item {Capacitação do aluno para o ferramental de grafos de conhecimento;}
+\item {escolha de uma plataforma para armazenamento de grafos de conhecimento;}
+\item {armazenamento das capacidades do sensor codificadas em SSN e das observações em SOSA \cite{JANOWICZ20191}, \cite{Janowicz:17:SSN}}
+\item{publicização desses grafos através de um endpoint SPARQL;}
+\item{definição e implementação de casos de teste da integração.}
+\end{itemize}
+
+Neste momento, acredita-se que as bibliotecas RDFLib (https://rdflib.readthedocs.io/en/stable/), OWLReady (https://owlready2.readthedocs.io/en/latest/), Flask (https://flask.palletsprojects.com/en/2.2.x/), Django (https://www.djangoproject.com/), SPARQLWrapper (https://sparqlwrapper.readthedocs.io/en/latest/) e o projeto rdflib-endpoint (https://github.com/vemonet/rdflib-endpoint) sejam subsídios para as atividades do segundo semestre.
+

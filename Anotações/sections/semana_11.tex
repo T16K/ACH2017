@@ -1,0 +1,545 @@
+\lecture{11}{26 Junho 2023}{Implementação WoTPy}
+
+\section{Semana 11}
+
+Plano para a implementação do WoTPy no arquivo ''server.py'':
+
+\begin{itemize}
+    \item Iniciar o Servient. Adicionar servidores HTTP e WebSocket ao Servient, se necessário.
+    \item Produzir um Thing com base na descrição TD.
+    \item Definir manipuladores personalizados para as propriedades e eventos do Thing.
+    \item Expor o Thing.
+    \item \url{https://github.com/agmangas/wot-py/commit/3dd4f7e428bd565970adf96f8f4482cf986496ea}
+\end{itemize}
+
+Anteriormente eu criei um servidor web com Tornado para ler e registrar leituras de UV. Para utilizar o WoTPy, penso em transformar essa funcionalidade em uma "Thing" do WoT.
+
+A implementação WoTPy é usada apenas no servidor (neste caso, no seu servidor Python onde as leituras UV são recebidas e processadas). O ESP32, ou qualquer outro dispositivo IoT, não precisa suportar WoTPy ou mesmo Python. O dispositivo só precisa ser capaz de enviar suas leituras para o servidor de uma maneira que o servidor possa interpretar.
+
+Neste caso, o ESP32 está enviando as leituras UV para o servidor como um POST HTTP com o corpo da solicitação contendo um JSON. O método POST geralmente não é usado para interagir diretamente com uma propriedade em WoT. Em vez disso, é frequentemente usado para interagir com ações em um Thing, que são operações mais complexas que podem envolver vários parâmetros de entrada e produzir um resultado.
+
+No padrão Web of Things (WoT) da W3C, a forma padrão de interagir com uma propriedade de um Thing é através de métodos HTTP GET (para ler o valor da propriedade) e PUT (para atualizar o valor da propriedade). Estes são os métodos recomendados pela especificação WoT e são os que a biblioteca WoTPy implementa para expor propriedades de Things.
+
+Ajustar o código no ESP32 para seguir as recomendações da W3C envolve usar o método HTTP PUT para atualizar a propriedade 'uv' do Thing.
+
+\url{https://github.com/agmangas/wot-py/commit/0613417f2ffbae386e45576d9bf48721b37c8483}
+
+\subsection{server.py}
+
+No servidor, a biblioteca wotpy é usada para criar um servidor WoT que expõe uma "Coisa" com uma propriedade de UV. Esta "Coisa" possui um manipulador de leitura e de gravação para a propriedade de UV, que são utilizados para ler e atualizar os valores do sensor. O servidor utiliza a biblioteca tornado para gerenciar operações assíncronas.
+
+\begin{verbatim}
+import json
+import logging
+import tornado.gen
+from tornado.ioloop import IOLoop
+from wotpy.protocols.http.server import HTTPServer
+from wotpy.wot.servient import Servient
+\end{verbatim}
+
+Primeiro as declarações de importação. Elas carregam diferentes módulos e pacotes que o código precisa para funcionar corretamente. Aqui está o que cada um deles faz:
+
+import json: 
+O módulo json é uma biblioteca padrão do Python para trabalhar com dados JSON (JavaScript Object Notation). Ele fornece métodos para analisar dados JSON para converter em um objeto Python (como um dicionário ou lista) e para converter objetos Python em strings JSON.
+Usada na função uv\_read\_handler para decodificar a string de dados UV em formato JSON para um objeto Python (uv\_data\_dict = json.loads(GLOBAL\_UV\_DATA.decode("utf-8"))). E também usada na função main para criar um Thing WoT a partir da descrição fornecida (wot.produce(json.dumps(DESCRIPTION))).
+
+import logging: 
+O módulo logging é uma biblioteca padrão do Python para configuração de registros de eventos em seu aplicativo. Ele pode registrar eventos em diferentes níveis de severidade e direcionar esses registros para uma variedade de destinos de saída.
+Usada em todo o código para registrar informações importantes e úteis para fins de depuração e rastreamento. Por exemplo, LOGGER.info("Reading UV data.").
+
+import tornado.gen: 
+tornado.gen é uma parte do framework Tornado para Python. É um módulo que contém utilitários para facilitar o uso de coroutines e outras funções que retornam Futures.
+Usada para definir uv\_read\_handler, uv\_write\_handler e main como funções coroutine que são especiais no Python, elas podem ser pausadas e retomadas, permitindo comportamento assíncrono.
+
+from tornado.ioloop import IOLoop: 
+IOLoop é a principal classe do Tornado para gerenciar eventos de E/S. Cada thread normalmente tem exatamente um IOLoop.
+IOLoop.current().add\_callback(main) e IOLoop.current().start() são chamadas na parte principal do script para iniciar o loop de eventos I/O do Tornado, que permite o comportamento assíncrono.
+
+from wotpy.protocols.http.server import HTTPServer:
+Esta linha importa a classe HTTPServer do pacote wotpy.protocols.http.server. Esta classe é usada para criar um servidor HTTP.
+HTTPServer é usado para criar um servidor HTTP na função main (http\_server = HTTPServer(port=HTTP\_PORT)).
+
+from wotpy.wot.servient import Servient: 
+Esta linha importa a classe Servient do pacote wotpy.wot.servient. Uma instância da classe Servient atua como um cliente e servidor em uma rede Web of Things (WoT).
+Servient é usado para criar um serviente WoT na função main (servient = Servient()).
+
+\begin{verbatim}
+logging.basicConfig()
+LOGGER = logging.getLogger()
+LOGGER.setLevel(logging.INFO)
+\end{verbatim}
+
+Em seguida configurar o registro (logging) em Python. Incluir configurações de registro (logging) no código é fundamental para o monitoramento, depuração e rastreamento de atividades dentro de um aplicativo.  Aqui está uma explicação detalhada do que cada linha faz:
+
+logging.basicConfig(): Esta função configura o sistema de registro para seu aplicativo. Sem nenhuma configuração específica passada como argumentos para basicConfig(), ela irá criar um registro padrão que escreve as mensagens de log no console (ou seja, a saída padrão). Esta função só deve ser chamada uma vez, e se for chamada mais de uma vez, a primeira chamada determinará o formato e a configuração do registro.
+
+LOGGER = logging.getLogger(): Esta função retorna uma referência para um objeto logger. Um logger é o objeto que as aplicações usam diretamente para fazer chamadas de log. Se nenhuma configuração de nome for fornecida para getLogger(), como no seu caso, ela retornará o logger de nível raiz.
+
+LOGGER.setLevel(logging.INFO): Isso configura o nível de severidade do logger para INFO. Os níveis de severidade do log, de menor para maior, são: DEBUG, INFO, WARNING, ERROR e CRITICAL. Ao definir o nível do logger para INFO, todas as mensagens de log com nível INFO e acima (ou seja, WARNING, ERROR e CRITICAL) serão registradas. As mensagens de log com nível DEBUG serão ignoradas.
+
+\begin{verbatim}
+ID_THING = "urn:uvthing"
+NAME_PROP_UV = "uv"
+
+DESCRIPTION = {
+    "id": ID_THING,
+    "name": ID_THING,
+    "properties": {
+        NAME_PROP_UV: {
+            "type": "number",
+            "readOnly": False,
+            "observable": True
+        }
+    }
+}
+\end{verbatim}
+
+Neste trecho de código, estamos definindo alguns identificadores e uma descrição para a "Coisa" (Thing) WoT que estamos expondo. Vamos analisar cada linha:
+
+ID\_THING = "urn:uvthing": Aqui, um identificador único (URN - Uniform Resource Name) para a "Coisa" WoT está sendo definido. Este identificador será usado para se referir a esta "Coisa" em particular na rede WoT.
+
+NAME\_PROP\_UV = "uv": Este é o nome da propriedade que estamos definindo para a "Coisa" WoT. Neste caso, a propriedade é "uv", o que provavelmente se refere ao valor de ultravioleta que a "Coisa" fornece.
+
+DESCRIPTION = {...}: Aqui, uma descrição completa da "Coisa" WoT está sendo definida. Esta descrição inclui o id e o name da "Coisa", bem como uma lista de suas properties (propriedades).
+
+Dentro das properties, estamos definindo uma propriedade chamada uv (o valor que definimos anteriormente para NAME\_PROP\_UV). Esta propriedade tem um type de "number", o que significa que o valor que ela fornece será numérico. Ela também tem uma configuração readOnly definida como False, o que significa que essa propriedade pode ser alterada, e uma configuração observable definida como True, o que significa que os clientes podem se inscrever para receber notificações sobre alterações nesta propriedade.
+
+Em resumo, estas linhas de código definem a "Coisa" WoT que será exposta pela nossa aplicação, incluindo o seu identificador, o nome e as características da propriedade que ela fornece.
+
+\begin{verbatim}
+@tornado.gen.coroutine
+def uv_read_handler():
+    LOGGER.info("Reading UV data.")
+    if GLOBAL_UV_DATA is None:
+        return
+    uv_data_dict = json.loads(GLOBAL_UV_DATA.decode("utf-8"))
+    uv_data = float(uv_data_dict['uv'])
+    raise tornado.gen.Return(uv_data)
+\end{verbatim}
+
+A função uv\_read\_handler é um manipulador personalizado para a propriedade 'UV'. Ela é definida como uma 'coroutine' com a ajuda do decorator @tornado.gen.coroutine, o que permite que a função seja assíncrona, ou seja, pode ser pausada e retomada, permitindo a execução de outras tarefas no meio tempo.
+
+Vamos olhar mais de perto para a função:
+
+LOGGER.info("Reading UV data."): Isto é apenas um registro de informação para sinalizar que a função começou a ler os dados UV.
+
+if GLOBAL\_UV\_DATA is None: return: Este é um controle de fluxo para verificar se GLOBAL\_UV\_DATA é None. Se for None, a função retorna imediatamente e termina. Esta é provavelmente uma medida de segurança para garantir que o programa não tente acessar ou trabalhar com dados não existentes.
+
+uv\_data\_dict = json.loads(GLOBAL\_UV\_DATA.decode("utf-8")): Aqui, os dados UV globais são decodificados de uma string binária para uma string normal usando o método decode("utf-8") e, em seguida, são convertidos de uma string JSON para um dicionário Python usando json.loads().
+
+uv\_data = float(uv\_data\_dict['uv']): Aqui, o valor UV real é extraído do dicionário uv\_data\_dict e convertido para um float.
+
+raise tornado.gen.Return(uv\_data): Finalmente, o valor UV é retornado como o resultado da função coroutine. A instrução raise tornado.gen.Return(uv\_data) é equivalente a return uv\_data em uma função normal, mas é a maneira recomendada de retornar valores de coroutines no Tornado.
+
+Então, basicamente, essa função é chamada quando algum cliente quer ler o valor atual da propriedade UV da "Coisa" WoT. A função verifica se os dados UV globais existem e, se existirem, extrai o valor UV, converte-o em um float e o retorna.
+
+\begin{verbatim}
+@tornado.gen.coroutine
+def uv\_write\_handler(value):
+    global GLOBAL\_UV\_DATA
+    LOGGER.info("Writing UV data.")
+    GLOBAL\_UV\_DATA = value
+    LOGGER.info("UV data updated to: {}".format(GLOBAL\_UV\_DATA))
+\end{verbatim}
+
+A função uv\_write\_handler é um manipulador personalizado para escrever os dados UV. É definida como uma coroutine com a ajuda do decorador @tornado.gen.coroutine, o que significa que pode ser uma função assíncrona (embora neste caso específico não haja operações assíncronas na função).
+
+Aqui está o que acontece nesta função:
+
+global GLOBAL\_UV\_DATA: Esta linha permite que a função acesse a variável global GLOBAL\_UV\_DATA. Sem esta linha, qualquer referência a GLOBAL\_UV\_DATA na função seria tratada como uma referência a uma nova variável local com o mesmo nome, e não à variável global.
+
+LOGGER.info("Writing UV data."): Esta é apenas uma mensagem de log para sinalizar que a função começou a escrever os dados UV.
+
+GLOBAL\_UV\_DATA = value: Aqui, a função atualiza a variável global GLOBAL\_UV\_DATA com o novo valor de UV fornecido à função. Este valor provavelmente é uma string JSON que representa os dados UV.
+
+LOGGER.info("UV data updated to: {}".format(GLOBAL\_UV\_DATA)): Esta é uma outra mensagem de log para confirmar que os dados UV foram atualizados.
+
+Então, basicamente, essa função é chamada quando algum cliente quer atualizar o valor da propriedade UV da "Coisa" WoT. A função recebe o novo valor, atualiza a variável global com ele, e registra que os dados UV foram atualizados.
+
+\begin{verbatim}
+@tornado.gen.coroutine
+def main():
+    LOGGER.info("Creating HTTP server on: {}".format(HTTP_PORT))
+    http_server = HTTPServer(port=HTTP_PORT)
+    LOGGER.info("Creating servient")
+    servient = Servient()
+    servient.add_server(http_server)
+    LOGGER.info("Starting servient")
+    wot = yield servient.start()
+    LOGGER.info("Exposing and configuring Thing")
+    exposed_thing = wot.produce(json.dumps(DESCRIPTION))
+    exposed_thing.set_property_read_handler(NAME_PROP_UV, uv_read_handler)
+    exposed_thing.set_property_write_handler(NAME_PROP_UV, uv_write_handler)
+    exposed_thing.expose()
+\end{verbatim}
+
+A função main é o ponto de entrada da aplicação. Ela é responsável por inicializar e configurar o servidor e a "Coisa" WoT. Como a função main usa a função yield, ela precisa ser uma coroutine, e é por isso que ela é definida com o decorador @tornado.gen.coroutine.
+
+Vamos analisar cada parte da função:
+
+LOGGER.info("Creating HTTP server on: {}".format(HTTP\_PORT)): Isso registra uma mensagem indicando que a criação do servidor HTTP está prestes a começar.
+
+http\_server = HTTPServer(port=HTTP\_PORT): Esta linha cria uma nova instância do servidor HTTP no porto especificado pela constante HTTP\_PORT.
+
+LOGGER.info("Creating servient"): Isso registra uma mensagem indicando que a criação do Servient (uma entidade que pode consumir e expor "Coisas" WoT) está prestes a começar.
+
+servient = Servient(): Esta linha cria uma nova instância de um Servient.
+
+servient.add\_server(http\_server): Aqui, o servidor HTTP é adicionado ao Servient, permitindo que ele exponha e consuma "Coisas" WoT via HTTP.
+
+LOGGER.info("Starting servient"): Isso registra uma mensagem indicando que o Servient está prestes a ser iniciado.
+
+wot = yield servient.start(): Esta linha inicia o Servient. Como a função start é assíncrona (retorna uma Future), a palavra-chave yield é usada para pausar a execução da função main até que o Servient seja iniciado. O valor retornado (um objeto WoT) é então atribuído à variável wot.
+
+LOGGER.info("Exposing and configuring Thing"): Isso registra uma mensagem indicando que a exposição e configuração da "Coisa" WoT estão prestes a começar.
+
+exposed\_thing = wot.produce(json.dumps(DESCRIPTION)): Esta linha cria a "Coisa" WoT usando a descrição definida anteriormente e a expõe.
+
+exposed\_thing.set\_property\_read\_handler(NAME\_PROP\_UV, uv\_read\_handler): Aqui, o manipulador de leitura para a propriedade UV é configurado para ser a função uv\_read\_handler.
+
+exposed\_thing.set\_property\_write\_handler(NAME\_PROP\_UV, uv\_write\_handler): Aqui, o manipulador de gravação para a propriedade UV é configurado para ser a função uv\_write\_handler.
+
+exposed\_thing.expose(): Finalmente, a "Coisa" WoT é exposta, tornando-a acessível para outros dispositivos na rede WoT.
+
+Então, em resumo, a função main é responsável por configurar e iniciar o servidor e a "Coisa" WoT.
+
+\begin{verbatim}
+if __name__ == "__main__":
+    LOGGER.info("Starting loop")
+    IOLoop.current().add_callback(main)
+    IOLoop.current().start()
+\end{verbatim}
+
+Essa parte do código é responsável por iniciar o loop de eventos principal do Tornado e colocar a função main na fila para ser executada assim que o loop começar.
+
+if \_\_name\_\_ == "\_\_main\_\_": é uma estrutura comum em scripts Python. \_\_name\_\_ é uma variável especial que o Python cria para cada módulo. Quando um módulo é importado, \_\_name\_\_ é definido como o nome do módulo. No entanto, quando o arquivo é executado como um script (em vez de ser importado), \_\_name\_\_ é definido como "\_\_main\_\_". Portanto, essa estrutura é usada para garantir que o código dentro do bloco seja executado apenas quando o script é executado diretamente, e não quando é importado como um módulo.
+
+LOGGER.info("Starting loop") é uma chamada para registrar uma mensagem indicando que o loop de eventos está prestes a começar.
+
+IOLoop.current().add\_callback(main) usa o método add\_callback da classe IOLoop para adicionar a função main à fila de tarefas a serem executadas. Essa função será chamada assim que o loop de eventos começar.
+
+IOLoop.current().start() inicia o loop de eventos. Esta chamada bloqueia e só retorna quando o loop de eventos é interrompido (o que normalmente acontece quando o programa é encerrado). Quando o loop começa, ele começa a executar todas as funções na fila de tarefas, que neste caso inclui a função main.
+
+Então, essencialmente, essas linhas estão inicializando o loop de eventos do Tornado e configurando-o para chamar a função main assim que começar.
+
+\subsection{main.py}
+
+No dispositivo ESP32, o valor de UV é lido periodicamente do sensor UV e enviado ao servidor WoT. Para isso, o script utiliza a biblioteca urequests para enviar uma requisição HTTP PUT ao servidor, incluindo o valor lido do sensor no corpo da requisição.
+
+\begin{verbatim}
+import machine
+import ujson
+import urequests
+import time
+\end{verbatim}
+
+machine: Esta biblioteca fornece funções para interagir com o hardware do dispositivo. Neste caso, é usada para interagir com o sensor UV através do ADC (Conversor Analógico-Digital).
+
+ujson: É uma versão otimizada para microcontroladores da biblioteca json do Python padrão. É usada para serializar os dados do sensor em um formato JSON para serem enviados ao servidor.
+
+urequests: Semelhante à biblioteca requests no Python padrão, urequests é uma biblioteca para fazer solicitações HTTP. Aqui, é utilizada para enviar os dados do sensor ao servidor WoT.
+
+time: Esta biblioteca fornece funções para trabalhar com o tempo. Neste código, é usada para fazer o dispositivo ESP32 aguardar um certo período de tempo entre as leituras do sensor.
+
+Então, essas quatro bibliotecas são usadas para realizar as principais tarefas no ESP32: ler os dados do sensor UV, converter esses dados para JSON, enviá-los para o servidor WoT, e fazer uma pausa entre as leituras do sensor.
+
+\begin{verbatim}
+TD = {
+    "links": [
+        {"href": "http://000.000.0.00:9494/urn:uvthing/property/uv"}
+    ]
+}
+\end{verbatim}
+
+Este é um exemplo de um documento de Descrição de Coisa (TD - Thing Description) simplificado. Em uma aplicação WoT (Web of Things), a Descrição da Coisa é uma representação padronizada da interface de uma coisa na Web of Things, fornecendo detalhes sobre suas capacidades e como interagir com ela.
+
+Neste caso específico, o documento TD contém apenas um único link, que é o endpoint do servidor onde o valor do sensor UV é enviado. Este link é definido como uma URL, que é composta da seguinte forma:
+
+\begin{verbatim}
+    "href": "http://<host>:<port>/<thing_name>/property/<property_name>"
+\end{verbatim}
+
+Portanto, o script do ESP32 utiliza este documento TD para saber para onde enviar os dados do sensor UV. Quando ele lê um valor do sensor, ele envia esse valor para a URL especificada no documento TD.
+
+\begin{verbatim}
+    while True:
+    uv_value = adc.read()
+    data = {"uv": uv_value}
+    url = TD['links'][0]['href']
+    headers = {'content-type': 'application/json'}
+
+    try:
+        r = urequests.put(url, data=ujson.dumps(data), headers=headers)
+        if r.status_code >= 200 and r.status_code < 300:
+            print('Successfully sent data to WoT server')
+        else:
+            print('Failed to send data to WoT server: received status code {}'.format(r.status_code))
+        r.close()
+    except Exception as e:
+        print('Could not send data to WoT server: ', e)
+
+    time.sleep(10)
+\end{verbatim}
+
+Este bloco de código é o loop principal que o dispositivo ESP32 executa continuamente. Ele realiza as seguintes ações:
+
+Lê o valor do sensor UV usando a função adc.read(). A variável adc é uma instância de machine.ADC, que foi inicializada para ler o valor do sensor UV.
+
+Cria um dicionário data que contém o valor lido do sensor UV. Este dicionário é então serializado em uma string JSON usando ujson.dumps(data). O resultado é o corpo da solicitação HTTP que será enviada ao servidor WoT.
+
+Recupera a URL do servidor WoT do documento de Descrição da Coisa (TD).
+
+Define os cabeçalhos da solicitação HTTP para indicar que o conteúdo da solicitação é JSON.
+
+Envia uma solicitação HTTP PUT para a URL do servidor WoT com os dados do sensor UV no corpo da solicitação. Se a solicitação for bem-sucedida (indicado por um código de status HTTP na faixa de 200 a 299), ele imprime uma mensagem de sucesso. Se a solicitação falhar (indicado por um código de status HTTP fora da faixa de 200 a 299), ele imprime uma mensagem de erro.
+
+Se ocorrer um erro ao tentar enviar a solicitação (por exemplo, se o dispositivo não conseguir se conectar ao servidor), ele imprime uma mensagem de erro.
+
+Por fim, o dispositivo pausa por 10 segundos antes de começar a próxima iteração do loop. Isto é para garantir que o dispositivo não sobrecarregue o servidor WoT com solicitações.
+
+Em resumo, este loop principal está lendo continuamente o valor do sensor UV, enviando esse valor ao servidor WoT e pausando por 10 segundos entre cada leitura/envio. Se ocorrer um erro em qualquer parte deste processo, ele imprime uma mensagem de erro.
+
+\subsection{Refatoração}
+
+Principais mudanças feitas durante a refatoração:
+
+\textbf{server.py}:
+
+Funções menores: start\_server foi introduzido. Esta função incorpora a criação e inicialização do servidor WoT e a configuração da "Coisa" que o servidor está expondo. Isso torna o código mais modular e mais fácil de entender.
+
+Nomes de Variáveis: Alterei o nome da variável GLOBAL\_UV\_DATA para uv\_data. Em Python, é uma convenção que nomes de variáveis em maiúsculas são constantes e não devem ser alteradas. Além disso, o nome uv\_data é mais simples e claro.
+
+Nomes de Funções: Alterei o nome das funções de manipulação de UV de uv\_read\_handler e uv\_write\_handler para read\_uv e write\_uv, respectivamente. Isso foi feito para aderir à convenção de que os nomes das funções devem ser verbos e descrever a ação que a função realiza.
+
+\textbf{main.py}
+
+Funções menores: Introduzi a função send\_uv\_data, que encapsula a lógica de envio de dados para o servidor WoT. Esta função é então chamada dentro do loop principal do programa.
+
+Função Main: Introduzi uma função main que contém o loop principal do programa. Isso torna o código mais organizado e permite que a lógica principal do programa seja facilmente identificada.
+
+\subsection{Aprimorar o Escalonamento}
+
+No código aprimorado para escalonamento com suporte a múltiplos sensores, foram feitas as seguintes alterações:
+
+Uso de Dicionário para Sensores e Descrição de Coisas:
+
+Os sensores agora são representados por um dicionário chamado sensors. Cada sensor é identificado por uma chave exclusiva (por exemplo, 'uv'), que também é usada como identificador no Thing Description correspondente.
+O dicionário sensors contém informações sobre cada sensor, como o tipo do sensor (por exemplo, 'uv') e a configuração específica do sensor (neste caso, a configuração do pino do ADC).
+O Thing Description é representado por um dicionário chamado TD. Cada sensor tem seu próprio conjunto de links e outros metadados.
+Essa abordagem permite adicionar facilmente mais sensores no futuro, especificando suas informações no dicionário sensors e no dicionário TD.
+Função send\_sensor\_data:
+
+Introduzi uma função chamada send\_sensor\_data, que é responsável por enviar os dados de um sensor específico para o servidor WoT.
+A função recebe o sensor\_id (a chave do sensor no dicionário sensors), o sensor\_type, a URL do servidor e os dados a serem enviados.
+O sensor\_id é usado para obter a URL específica do sensor no Thing Description (TD) e também é usado para imprimir mensagens de log mais informativas.
+Agora, você pode adicionar mais sensores ao dicionário sensors e eles serão tratados de forma genérica pela função send\_sensor\_data.
+Loop Principal:
+
+O loop principal no main agora itera sobre os sensores no dicionário sensors.
+Para cada sensor, é lido o valor do sensor e criado um dicionário de dados correspondente.
+A função send\_sensor\_data é chamada para enviar os dados do sensor para o servidor WoT.
+Isso permite que você adicione mais sensores no dicionário sensors e eles serão processados de forma iterativa.
+Essas alterações permitem adicionar e dimensionar facilmente mais sensores no seu sistema, tornando-o mais flexível e expansível no futuro.
+
+\subsection{Recomendações W3C}
+
+Os códigos fornecidos não seguem completamente as recomendações da W3C (World Wide Web Consortium) para a criação de um servidor WoT. No entanto, eles implementam alguns conceitos fundamentais do WoT, como a exposição de um Thing (coisa) com propriedades e a interação por meio do protocolo HTTP.
+
+As recomendações da W3C para o WoT incluem padrões e especificações técnicas para descrever, conectar e interagir com as coisas na Web. Algumas das principais especificações do WoT são o WoT Thing Description (TD) e o WoT Binding Templates. Essas especificações fornecem uma estrutura para descrever as coisas, suas propriedades, ações e eventos, bem como definir como elas podem ser acessadas e interagidas.
+
+Os códigos fornecidos estão parcialmente alinhados com as recomendações da W3C para o Web of Things (WoT), mas também apresentam algumas áreas em que não estão completamente alinhados. Vamos analisar esses pontos:
+
+Alinhados com as recomendações da W3C:
+
+Exposição do Thing: O código server.py implementa a exposição de um Thing (coisa) por meio da biblioteca WotPy. Ele define uma descrição básica do Thing e configura um servidor HTTP para receber solicitações.
+
+Propriedades observáveis: A descrição do Thing no server.py inclui a definição de uma propriedade chamada "uv" que é observável. Isso está alinhado com as recomendações da W3C para permitir que os clientes recebam atualizações quando o valor da propriedade é alterado.
+
+Handlers de leitura e escrita: O código server.py implementa handlers de leitura e escrita para a propriedade UV. Esses handlers são responsáveis por fornecer o valor atual da propriedade para leitura e atualizar o valor quando ocorre uma escrita. Isso é consistente com as recomendações da W3C para interações com as propriedades dos Things.
+
+Não totalmente alinhados com as recomendações da W3C:
+
+Descrição do Thing: A descrição do Thing no server.py é definida como um dicionário Python em vez de seguir o formato do WoT Thing Description (TD), que é uma especificação da W3C. O uso do dicionário é uma simplificação e não segue a estrutura e os detalhes específicos recomendados pelo WoT TD.
+
+Protocolo HTTP: Embora o protocolo HTTP seja comumente usado em implementações WoT, as recomendações da W3C também incluem outros protocolos adequados para dispositivos IoT com recursos limitados, como o CoAP e o MQTT. O código fornecido utiliza apenas o protocolo HTTP e não considera outras opções.
+
+Configuração de segurança: Os códigos fornecidos não abordam a configuração de segurança, como autenticação e criptografia, que são importantes na implementação de um servidor WoT seguro. As recomendações da W3C enfatizam a importância de considerar a segurança em todas as etapas da implementação.
+
+\subsection{Versão Final}
+
+\url{https://github.com/agmangas/wot-py/commit/d1151f9e2c0ba9e176b18755d83ebf8c0b98014c}
+
+\textbf{Transmissão de Dados do Sensor UV com ESP32 e WoT}
+
+Este projeto tem como objetivo demonstrar a transmissão de dados do sensor UV de um microcontrolador ESP32 para um servidor Web of Things (WoT) utilizando o protocolo HTTP. O projeto utiliza a biblioteca WotPy para criar o servidor e lidar com as interações do WoT, além do microcontrolador ESP32 com o sensor UV ML8511.
+
+O código consiste em dois arquivos principais: server.py e main.py. O arquivo server.py configura o servidor WoT, expõe um Thing (coisa) que representa o sensor UV e define manipuladores personalizados para a leitura e escrita dos dados do sensor UV. Por outro lado, o arquivo main.py é executado no ESP32, lê os dados do sensor UV periodicamente e os envia para o servidor WoT usando requisições HTTP.
+
+Para utilizar este projeto, você precisa executar o arquivo server.py em seu servidor Python e carregar o arquivo main.py no seu ESP32. O ESP32 lerá continuamente os dados do sensor UV e os enviará para o servidor, onde podem ser acessados e observados através do Thing exposto.
+
+Este projeto serve como um exemplo básico de integração de dispositivos IoT com os princípios do WoT, possibilitando a comunicação e interoperabilidade entre dispositivos e aplicativos em um ecossistema IoT descentralizado.
+
+Sinta-se à vontade para personalizar e expandir este projeto de acordo com seus requisitos e configurações específicas de sensores.
+
+\texttt{server.py}
+
+Importação das bibliotecas e módulos necessários:
+\begin{verbatim}
+import json
+import logging
+import tornado.gen
+from tornado.ioloop import IOLoop
+from wotpy.protocols.http.server import HTTPServer
+from wotpy.wot.servient import Servient
+\end{verbatim}
+
+Definição das constantes:
+\begin{verbatim}
+HTTP_PORT = 9494
+ID_THING = "urn:esp32"
+UV_SENSOR = "uv"
+\end{verbatim}
+A constante HTTP\_PORT especifica a porta na qual o servidor irá escutar. ID\_THING representa o identificador para o Thing (coisa), e UV\_SENSOR é o nome da propriedade que representa o sensor UV.
+
+Armazenamento global dos dados:
+\begin{verbatim}
+uv_data = None
+\end{verbatim}
+Esta variável irá armazenar os dados mais recentes do sensor UV recebidos do ESP32.
+
+Configuração do registro (logging):
+\begin{verbatim}
+logging.basicConfig()
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+\end{verbatim}
+Configurando o registro para exibir mensagens de log com o nível definido como INFO.
+
+Descrição do Thing:
+\begin{verbatim}
+description = {
+    "id": ID_THING,
+    "name": ID_THING,
+    "properties": {
+        UV_SENSOR: {
+            "type": "number",
+            "readOnly": False,
+            "observable": True
+        }
+    }
+}
+\end{verbatim}
+Este dicionário representa a descrição do Thing. Ele especifica o ID, nome e propriedades do Thing. Neste caso, define a propriedade UV\_SENSOR como um tipo numérico que pode ser lido e observado.
+
+Manipuladores personalizados para leitura e escrita dos dados UV:
+\begin{verbatim}
+@tornado.gen.coroutine
+def read_uv():
+    """Manipulador personalizado para a propriedade 'UV'."""
+    if uv_data is None:
+        return
+    uv_data_dict = json.loads(uv_data.decode("utf-8"))
+    return float(uv_data_dict['uv'])
+
+@tornado.gen.coroutine
+def write_uv(value):
+    """Manipulador personalizado para escrever dados UV."""
+    global uv_data
+    uv_data = value
+\end{verbatim}
+Essas duas funções servem como manipuladores personalizados para ler e escrever os dados do sensor UV. A função read\_uv analisa os dados do UV armazenados e os retorna como um valor float. A função write\_uv atualiza a variável uv\_data com o valor recebido.
+
+Iniciando o servidor:
+\begin{verbatim}
+@tornado.gen.coroutine
+def start_server():
+    http_server = HTTPServer(port=HTTP_PORT)
+    servient = Servient()
+    servient.add_server(http_server)
+    wot = yield servient.start()
+    exposed_thing = wot.produce(json.dumps(description))
+    exposed_thing.set_property_read_handler(UV_SENSOR, read_uv)
+    exposed_thing.set_property_write_handler(UV_SENSOR, write_uv)
+    exposed_thing.expose()
+
+if __name__ == "__main__":
+    IOLoop.current().add_callback(start_server)
+    IOLoop.current().start()
+\end{verbatim}
+A função start\_server cria um servidor HTTP utilizando a porta especificada e inicializa o objeto Servient do WotPy. Em seguida, ele inicia o servient, produz o Thing com base na descrição, define os manipuladores personalizados de leitura e escrita para a propriedade UV e expõe o Thing. Por fim, o servidor é iniciado adicionando a função start\_server ao IOLoop.
+
+\texttt{main.py}
+
+Importação dos módulos necessários:
+\begin{verbatim}
+import machine
+import ujson
+import urequests
+import time
+\end{verbatim}
+
+Configuração do sensor:
+\begin{verbatim}
+sensors = {
+    'uv_sensor': {'type': 'uv', 'sensor': machine.ADC(machine.Pin(34))},
+}
+\end{verbatim}
+Este dicionário contém as configurações do sensor. Neste caso, ele define um sensor uv\_sensor com seu tipo como 'uv' e especifica o pino correspondente no ESP32.
+
+Descrição do Thing:
+\begin{verbatim}
+TD = {
+    'uv_sensor': {"links": [{"href": "http://192.168.0.39:9494/urn:esp32/property/uv"}]},
+}
+\end{verbatim}
+O dicionário TD armazena as descrições dos Things. Ele contém um link para a propriedade do sensor UV no servidor.
+
+Função para enviar os dados do sensor para o servidor:
+\begin{verbatim}
+def send_sensor_data(sensor_id, sensor_type, url, data):
+    headers = {'content-type': 'application/json'}
+    try:
+        r = urequests.put(url.format(sensor_id), data=ujson.dumps(data), headers=headers)
+        if r.status_code >= 200 and r.status_code < 300:
+            print('Dados do {} enviados com sucesso do {} para o servidor WoT'.format(sensor_type, sensor_id))
+        else:
+            print('Falha ao enviar os dados do {} do {} para o servidor WoT: código de status recebido {}'.format(sensor_type, sensor_id, r.status_code))
+        r.close()
+    except Exception as e:
+        print('Não foi possível enviar os dados do {} do {} para o servidor WoT: '.format(sensor_type, sensor_id), e)
+\end{verbatim}
+Esta função recebe o ID do sensor, o tipo, a URL e os dados como entrada. Ela envia uma requisição HTTP PUT para o servidor com a carga útil de dados no formato JSON. Em seguida, ela imprime uma mensagem de sucesso ou falha com base no código de status da resposta.
+
+Função principal:
+\begin{verbatim}
+def main():
+    while True:
+        for sensor_id, sensor_info in sensors.items():
+            sensor_value = sensor_info['sensor'].read()
+            data = {sensor_info['type']: sensor_value}
+            url = TD[sensor_id]['links'][0]['href']
+            send_sensor_data(sensor_id, sensor_info['type'], url, data)
+        time.sleep(5)
+
+if __name__ == "__main__":
+    main()
+\end{verbatim}
+A função main é executada quando o script é executado. Ela entra em um loop infinito e itera por cada sensor definido no dicionário sensors. Ela lê o valor do sensor, cria um objeto de dados com o tipo correspondente, recupera a URL da Descrição do Thing (TD) e chama a função send\_sensor\_data para enviar os dados para o servidor. O loop aguarda 5 segundos antes de repetir.
+
+\texttt{boot.py}
+
+O arquivo boot.py é um script que é executado automaticamente quando o ESP32 é inicializado. Seu objetivo é estabelecer uma conexão Wi-Fi com a rede especificada, permitindo que o ESP32 se conecte à internet e se comunique com o servidor WoT.
+
+O código define uma função chamada do\_connect que recebe o SSID (nome da rede) e a senha como argumentos. Dentro da função, ele importa o módulo network para gerenciar a conexão Wi-Fi.
+
+A função verifica se o ESP32 já está conectado a uma rede usando o método isconnected da interface STA\_IF (interface de estação). Se o ESP32 não estiver conectado, ele prossegue com a conexão, ativando a interface de estação (active(True)) e chamando o método connect com o SSID e senha fornecidos.
+
+Após iniciar a conexão, o código entra em um loop que espera até que o ESP32 se conecte com sucesso à rede (isconnected() retorna True).
+
+Uma vez que a conexão seja estabelecida, ele imprime os detalhes de configuração da rede (endereço IP, máscara de sub-rede, gateway, etc.) usando o método ifconfig da interface de estação.
+
+Para usar este script, substitua 'YourSSID' pelo SSID da sua rede Wi-Fi e 'YourPassword' pela senha correspondente.
+
+Ao incluir este script boot.py no seu ESP32, ele se conectará automaticamente à rede Wi-Fi especificada durante a inicialização, garantindo uma conexão com a internet confiável para o seu aplicativo.
+
+Lembre-se de carregar o arquivo boot.py modificado para o ESP32 e verificar se as credenciais de rede estão corretas antes de implantar o seu projeto.

@@ -1,0 +1,82 @@
+\lecture{3}{28 Abril 2023}{Documentação}
+
+\section{Semana 03}
+
+\url{https://github.com/Endum/WoTLamp/blob/master/lamp.py}
+
+A descoberta automática de dispositivos é um recurso que permite que os dispositivos sejam identificados e conectados a uma rede sem a necessidade de configuração manual. Embora não seja mencionado nos textos, é possível que haja soluções específicas para cada protocolo que possam auxiliar na descoberta automática de dispositivos em um ambiente de Internet das Coisas (IoT).
+
+Na documentação, não há menção explícita à descoberta automática de dispositivos para os protocolos de binding HTTP, MQTT e CoAP. Eles focam principalmente no mapeamento entre ações de alto nível que podem ser executadas em um "Thing" e as mensagens trocadas ao usar esses protocolos de binding específicos.
+
+Além disso, a documentação não especifica um tipo de servidor em particular para os protocolos de binding HTTP, MQTT e CoAP. No entanto, cada protocolo possui características diferentes e, portanto, pode exigir tipos de servidores distintos:
+
+HTTP: O protocolo HTTP é geralmente utilizado em servidores web. Um servidor HTTP pode ser baseado em soluções como Apache, Nginx, Microsoft IIS, entre outros, para processar e responder às solicitações HTTP de clientes.
+
+MQTT: O MQTT requer a presença de um broker MQTT externo, que é um servidor especializado em lidar com a troca de mensagens entre dispositivos em um padrão de publicação/assinatura. Exemplos de brokers MQTT incluem Mosquitto, HiveMQ, EMQ X e RabbitMQ com o plugin MQTT.
+
+CoAP: O CoAP é um protocolo leve projetado para uso em dispositivos de recursos limitados, como sensores e atuadores em redes de IoT. Um servidor CoAP pode ser construído com bibliotecas e ferramentas específicas, como Californium (Java), libcoap (C), CoAP.NET (C\#) e outras.
+
+É importante ressaltar que o tipo de servidor utilizado depende do protocolo e das necessidades do sistema, podendo ser adaptado de acordo com as restrições e requisitos específicos do ambiente.
+
+\subsection{WebSockets}
+
+O protocolo WebSockets é utilizado para executar ações de alto nível em um Thing, trocando mensagens no formato JSON-RPC 2.0 com o servidor. Os elementos de formulário associados ao WebSockets têm o formato:
+
+\begin{verbatim}
+{
+"href": "ws://host.fundacionctic.org:9393/temperaturething",
+"mediaType": "application/json"
+}   
+\end{verbatim}
+
+As interações com o servidor WebSocket ocorrem através da troca de mensagens JSON-RPC, como mensagens de solicitação enviadas pelo cliente, mensagens de resposta enviadas pelo servidor e mensagens de erro retornadas em caso de problemas. Mensagens de Item Emitido são enviadas para inscrições ativas quando novos eventos são emitidos.
+
+O mapeamento do modelo de interação inclui: Ler Propriedade, Escrever Propriedade, Invocar Ação, Observar Mudanças de Propriedade, Observar Evento, Observar Mudanças no TD (Thing Description) e Descartar Inscrição. Cada interação possui um formato de mensagem específico para solicitação e resposta.
+
+\subsection{HTTP}
+
+A seção descreve o mapeamento entre ações de alto nível que podem ser executadas em um Thing e as mensagens trocadas com o servidor ao usar o HTTP Protocol Binding. As mensagens são serializadas em formato JSON e os elementos de formulário variam de acordo com o tipo de interação.
+
+O mapeamento do modelo de interação inclui: Ler Propriedade, Escrever Propriedade, Invocar Ação, Observar Mudanças de Propriedade e Observar Evento. Cada interação possui um formato específico de solicitação e resposta, e o protocolo HTTP adota o padrão de long-polling para lidar com mensagens do lado do servidor.
+
+Ler e Escrever Propriedades envolvem requisições GET e PUT, respectivamente, e ambos retornam uma resposta HTTP 200 com o valor da propriedade. Invocar Ação envolve uma requisição POST, que inicia a invocação e retorna um UUID único. O status da invocação pode ser obtido através de uma requisição GET.
+
+Observar Mudanças de Propriedade e Observar Evento são realizados por meio de requisições GET, e as respostas seguem o formato das ações Ler Propriedade e Observar Evento, respectivamente. As inscrições são gerenciadas automaticamente pelo HTTP Binding, sendo inicializadas em cada solicitação e canceladas após a emissão de um valor.
+
+\subsection{MQTT}
+
+Esta seção descreve o mapeamento entre as ações de alto nível que podem ser executadas em um Thing e as mensagens trocadas com o broker MQTT ao usar o MQTT Protocol Binding.
+
+Diferente de outros bindings, o binding MQTT não é autossuficiente e requer a presença de um broker MQTT externo. As mensagens são serializadas em formato JSON e os elementos de formulário variam de acordo com o tipo de interação.
+
+Os tópicos do MQTT são divididos em seis tipos diferentes usados pelos clientes e servidores para troca de mensagens. O mapeamento do modelo de interação inclui: Ler Propriedade, Observar Mudanças de Propriedade, Escrever Propriedade, Invocar Ação e Observar Evento.
+
+Ler Propriedade envolve a publicação de uma mensagem no tópico de solicitação de propriedade, que força o servidor a publicar o valor atual da propriedade no tópico de atualização de propriedade.
+
+Observar Mudanças de Propriedade ocorre automaticamente, com todas as mudanças de propriedade publicadas no tópico de atualização de propriedade, sem intervenção adicional do cliente.
+
+Escrever Propriedade requer que o cliente publique uma mensagem no tópico de solicitação de propriedade, e o servidor reconhece a escrita publicando uma mensagem no tópico de confirmação de escrita de propriedade.
+
+Invocar Ação inicia-se com a publicação de uma mensagem no tópico de invocação de ação, e o resultado da invocação é publicado no tópico de resultado de ação.
+
+Observar Evento acontece automaticamente, com todas as emissões de evento publicadas no tópico de emissão de evento, sem intervenção adicional do cliente.
+
+Não há necessidade de gerenciar manualmente as inscrições, pois o servidor MQTT mantém uma inscrição interna para todas as propriedades e eventos durante sua vida útil.
+
+\subsection{CoAP}
+
+Esta seção descreve o mapeamento entre as ações de alto nível que podem ser executadas em um Thing e as mensagens trocadas com o servidor ao usar o CoAP Protocol Binding.
+
+Todas as mensagens são serializadas em formato JSON. Os elementos de formulário produzidos pelo binding CoAP variam dependendo do tipo de interação. Os servidores no binding CoAP expõem três recursos distintos, um para cada tipo de interação (propriedade, ação e evento).
+
+O mapeamento do modelo de interação inclui: Ler Propriedade, Escrever Propriedade, Observar Mudanças de Propriedade, Invocar Ação e Observar Evento. O binding CoAP aproveita o CoAP Observe para implementar mensagens do lado do servidor ao invocar ações ou assinar propriedades/eventos.
+
+Ler Propriedade envolve o envio de uma solicitação GET para o URL CoAP correspondente. A resposta incluirá o valor da propriedade em questão.
+
+Escrever Propriedade requer o envio de uma solicitação PUT para o URL CoAP apropriado, incluindo o novo valor da propriedade no corpo da mensagem.
+
+Observar Mudanças de Propriedade é semelhante à ação de Ler Propriedade, exceto que o cliente deve se registrar como observador para começar a receber mensagens do lado do servidor.
+
+Invocar Ação inicia-se com uma solicitação POST para o URL CoAP relevante, incluindo o argumento da ação no corpo da mensagem. O cliente pode verificar o status da invocação observando o recurso e passando o ID da invocação no payload.
+
+Observar Evento envolve a criação de inscrições para o evento observando o recurso. Cada resposta do servidor para uma inscrição ativa conterá a emissão de evento mais recente.

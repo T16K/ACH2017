@@ -1,0 +1,49 @@
+\lecture{9}{12 Junho 2023}{}
+
+\section{Semana 09}
+
+O objetivo é estabelecer uma comunicação básica entre o ESP32 e o servidor, utilizando HTTP para transmitir os dados do sensor UV.
+
+\begin{itemize}
+    \item O script boot.py no ESP32 será responsável por estabelecer a conexão com a rede WiFi.
+    \item O script main.py no ESP32 será encarregado de ler o valor do sensor UV e transmitir esse valor para o servidor por meio de um pedido HTTP POST.
+    \item O servidor, que executa o script server.py, receberá e processará os valores do sensor UV que são enviados pelo ESP32.
+    \item \url{https://github.com/T16K/wot-py/commit/34afc51099e2bec61f61d9fc7daf971a54dbc856}
+\end{itemize}
+
+\subsection{Servidor}
+
+Encontrei problemas na abertura das portas do servidor. Para solucionar isso, testei o programa server.py a partir do exemplo \textit{temperature}, com o objetivo de acessar o servidor WoT (Web of Things) criado. O servidor escuta nas seguintes portas especificadas:
+
+\begin{itemize}
+\item Porta 9393 para conexões WebSocket.
+\item Porta 9494 para conexões HTTP.
+\end{itemize}
+
+Contudo, ao tentar realizar uma solicitação GET para \url{http://localhost:9494/}, a conexão com o localhost foi recusada.
+
+Essa situação não havia ocorrido antes de começar a executar os scripts dentro da imagem do Docker, então deduzi que este poderia ser o problema. Após pesquisar, encontrei a solução no link \url{https://docs.docker.com/engine/reference/run/#expose-incoming-ports}.
+
+Portanto, modifiquei o comando original para: 
+\begin{lstlisting}[breaklines]
+docker container run -p 9090:9090 -p 9393:9393 -p 9494:9494 -ti --rm -v $PWD:/asdf 7af5d5d07d93 sh
+\end{lstlisting}
+
+
+No entanto, percebi outro problema: a configuração de rede do Docker não estava utilizando a mesma rede local do ESP32. Para diagnosticar esse problema, utilizei o comando "ip a". Para resolver, bastou utilizar a opção "--network host" e excluir a opção "-p".
+
+\subsection{Função POST}
+
+Com relação à função POST, estou enfrentando dois problemas principais. No terminal do servidor, estou recebendo as seguintes mensagens:
+
+\begin{lstlisting}[breaklines]
+404 GET /uv (::1) 0.64ms
+404 GET /favicon.ico (::1) 0.64ms
+\end{lstlisting}
+
+E, no rshell, ao usar o comando "repl" para comunicar com o ESP32, obtenho:
+
+\begin{lstlisting}[breaklines]
+[Errno 113] ECONNABORTED
+[Errno 118] EHOSTUNREACH
+\end{lstlisting}

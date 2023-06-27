@@ -1,0 +1,28 @@
+\lecture{2}{19 Abril 2023}{Revisão da Semana Passada}
+
+\section{Semana 02}
+
+Ao fazer o teste da implementação da semana passada, executando o arquivo "pytest-docker-all.sh", todos os testes são aprovados.
+
+\subsection{Warning}
+
+Durante a execução do "docker build .", ocorreram alguns avisos que não foram mencionados anteriormente.
+
+\begin{lstlisting}[breaklines]
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+\end{lstlisting}
+
+\begin{lstlisting}[breaklines]
+WARNING: You are using pip version 22.0.4; however, version 23.1 is available.
+You should consider upgrading via the '/usr/local/bin/python -m pip install --upgrade pip' command.
+\end{lstlisting}
+
+\subsection{Atualização das Dependênciais}
+
+Optei por utilizar a versão original do Python (3.7) e, especificamente no arquivo "examples/benchmark/requirements.txt", reverti à versão modificada pelo [\href{https://github.com/agmangas/wot-py/commit/ab14570927ccb1fcda5e7ffc415fda3c1ef2d00d}{dependabot[bot]}].
+
+\url{https://github.com/T16K/wot-py/commit/61bec7348c6342c05fd8d2c3ccb21dad60aed58b}
+
+\subsection{Resultados}
+
+Dessa forma, o WoTPy consegue construir corretamente o Docker e passar nos testes propostos no "pytest-docker-all.sh".
