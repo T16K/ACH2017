@@ -2,11 +2,11 @@
 
 ## Descrição
 
-Este projeto demonstra a transmissão de dados do sensor UV ML8511 de um microcontrolador ESP32 para um servidor Web of Things (WoT). O projeto utiliza a biblioteca WotPy para criação do servidor e interações com o WoT, e o microcontrolador ESP32 emparelhado com um sensor UV ML8511.
+Este projeto tem como objetivo demonstrar o uso do microcontrolador ESP32 como cliente do servidor Web of Things (WoT), utilizando o sensor de radiação ultravioleta (UV) ML8511. Será realizado o monitoramento dos níveis de radiação UV e a transmissão desses dados para o servidor WoT. O ESP32 será configurado para se comunicar com o servidor e receber atualizações em tempo real.
 
 ## Lista de Materiais
 
-Antes de começar, serão necessários os seguintes componentes:
+Para o projeto, foram necessários os seguintes componentes:
 (https://github.com/T16K/ACH2157#lista-de-materiais)
 - Placa de desenvolvimento ESP-WROOM-32 e cabo USB
 - Sensor de Luz Ultravioleta UV ML8511
@@ -16,53 +16,47 @@ Antes de começar, serão necessários os seguintes componentes:
 
 ## Introdução ao ESP32
 
-O [ESP32](https://t16k-ach2157.readthedocs.io/en/latest/comp/esp.html) é um microcontrolador amplamente utilizado para aplicações de Internet das Coisas (IoT). Com recursos avançados, como processador dual-core, conectividade Wi-Fi e Bluetooth, e diversas interfaces, o ESP32 é uma escolha popular para projetos IoT. Sua versatilidade e baixo consumo de energia tornam-no adequado para uma variedade de aplicações, desde automação residencial até dispositivos vestíveis. Nesta introdução, exploraremos os principais recursos e benefícios do ESP32.
+O [ESP32](https://t16k-ach2157.readthedocs.io/en/latest/comp/esp.html) é um microcontrolador amplamente utilizado em aplicações de Internet das Coisas (IoT). Ele possui recursos avançados, como processador dual-core, conectividade Wi-Fi e Bluetooth, e diversas interfaces, tornando-o ideal para projetos IoT. Nesta introdução, exploraremos os principais recursos e benefícios do ESP32.
 
-## Introdução ao MicroPython
+## MicroPython no ESP32
 
-O [MicroPython](https://t16k-ach2157.readthedocs.io/en/latest/comp/esp.html#introduzindo-o-micropython) é uma implementação da linguagem de programação Python projetada para ser executada em microcontroladores e sistemas embarcados. Ele oferece uma abordagem simplificada e eficiente para o desenvolvimento de aplicativos para dispositivos de baixo consumo de energia e recursos limitados. Com o MicroPython, é possível escrever código Python diretamente no microcontrolador, facilitando o desenvolvimento rápido e a prototipagem de projetos.
-
-Uma das principais vantagens do MicroPython é sua facilidade de uso e familiaridade para aqueles que já estão familiarizados com a linguagem Python. Ele permite aproveitar a ampla gama de bibliotecas e recursos disponíveis na comunidade Python, tornando mais acessível o desenvolvimento de projetos para microcontroladores.
-
-Além disso, o MicroPython oferece recursos exclusivos, como suporte integrado para entrada e saída de pinos, gerenciamento de energia e manipulação direta de registros de hardware, permitindo um controle mais preciso do dispositivo.
-
-Com sua combinação de simplicidade, eficiência e flexibilidade, o MicroPython tem ganhado popularidade entre desenvolvedores, makers e entusiastas de IoT que desejam aproveitar o poder da linguagem Python em dispositivos embarcados. Nesta introdução, exploraremos os recursos e benefícios do MicroPython, destacando sua versatilidade e potencial para impulsionar a criação de projetos inovadores e eficientes no mundo da eletrônica embarcada.
+O [MicroPython](https://t16k-ach2157.readthedocs.io/en/latest/comp/ é uma implementação da linguagem de programação Python otimizada para microcontroladores e sistemas embarcados. Com o MicroPython, é possível escrever código Python diretamente no microcontrolador ESP32, facilitando o desenvolvimento e a prototipagem de projetos IoT.
 
 ## Introdução ao ML8511
 
-O [ML8511](https://t16k-ach2157.readthedocs.io/en/latest/comp/sensor.html#introduzindo-o-ml8511-uv-sensor) é um sensor de radiação ultravioleta (UV) amplamente utilizado em aplicações relacionadas à detecção e monitoramento da radiação UV. Esse sensor permite medir com precisão a intensidade dos raios UV, o que é essencial para avaliar os níveis de exposição solar e tomar medidas adequadas para proteção contra os raios UV prejudiciais. Com seu tamanho compacto e interface de comunicação simples, o ML8511 é uma escolha popular para projetos que envolvem monitoramento da radiação UV, como dispositivos de proteção solar, dispositivos vestíveis e sistemas de monitoramento ambiental. Nesta introdução, exploraremos as características e aplicações do ML8511, destacando seu papel na promoção da segurança e bem-estar em ambientes expostos à radiação UV.
+O [ML8511](https://t16k-ach2157.readthedocs.io/en/latest/comp/sensor.html#introduzindo-o-ml8511-uv-sensor) é um sensor de radiação ultravioleta amplamente utilizado para detecção e monitoramento da radiação UV. Ele permite medir com precisão a intensidade dos raios UV, o que é essencial para avaliar os níveis de exposição solar e tomar medidas adequadas de proteção.
 
 ## Conexões
 
-Conectar o sensor UV ML8511 ao ESP32: 
+Conexão do sensor UV ML8511 ao ESP32: 
 (https://github.com/T16K/ACH2157#conex%C3%B5es)
 - GND (ML8511) para GND (ESP32)
 - VCC (ML8511) para 3V3 (ESP32)
 - OUT (ML8511) para um pino analógico 34 (ESP32)
 
-Escrever um código que leia os dados do sensor UV e os exiba no ESP32, usando a linguagem de programação MicroPython, que é uma versão do Python 3 otimizada para microcontroladores como o ESP32.
-(https://t16k-ach2157.readthedocs.io/en/latest/software/py.html)
+Para mais informações sobre o ESP32 e o Sensor ML8511, consultar o [GitHub](https://github.com/T16K/ACH2157) ou a [Documentação](https://t16k-ach2157.readthedocs.io/en/latest/).
 
-Para mais informações sobre o ESP32 e o Sensor ML8511, acessar o [GitHub](https://github.com/T16K/ACH2157) ou a [Documentação](https://t16k-ach2157.readthedocs.io/en/latest/)
+## Configuração como Cliente WoT
 
-## Servidor e Cliente
+Ao realizar a pesquisa, foi constatado que o MicroPython não suporta diretamente o uso da biblioteca WoTPy. Portanto, neste projeto, o ESP32 será utilizado como cliente do servidor WoT. Isso significa que o ESP32 atuará como um dispositivo que se conecta ao servidor para receber atualizações e interagir com o WoT.
 
-Com isso, é necessário definir como o ESP32 estará se comportando. No caso de um servidor, a instalação do WoTPy é necessária. Note que para esta configuração, não há necessidade de um gateway. Já para um cliente, um gateway se torna essencial. Este atua como intermediário entre o ESP32 e o mundo externo, facilitando a comunicação entre os dois.
+Para configurar o ESP32 como cliente WoT, é necessário estabelecer uma comunicação com o servidor WoT por meio de um gateway. O gateway funciona como intermediário, facilitando a comunicação entre o ESP32 e o servidor. Dessa forma, o ESP32 poderá enviar os dados do sensor ML8511 para o servidor e receber atualizações e comandos.
 
-Fazendo um primeiro esboço da aplicação supondo que o ESP32 seja um servidor:
+Para implementar o cliente WoT, será necessário programar o ESP32 para estabelecer a conexão com o servidor WoT e configurar a troca de dados. Isso pode ser feito por meio de requisições HTTP ou usando protocolos como MQTT ou CoAP.
 
-Primeiro, configurar o ESP32 para ler os valores do sensor ML8511. Programando o ESP32 com um código que lê os valores do sensor a intervalos regulares. Este código será executado no ambiente de desenvolvimento MicroPython.
+Com o ESP32 configurado como cliente WoT, ele poderá receber atualizações dos dados do sensor ML8511 do servidor WoT. Esses dados podem ser utilizados para exibir informações em um display, acionar alarmes ou enviar notificações para outros dispositivos.
 
-O ESP32 é programado para funcionar como um servidor WoT. Ele expõe a propriedade que representa o valor do sensor ML8511 através de um protocolo de rede, como HTTP.
+No contexto deste projeto, o ESP32 atuará como um cliente WoT, realizando a transmissão dos dados do sensor ML8511 para o servidor e recebendo as atualizações em tempo real.
 
-Sempre que o ESP32 lê um valor do sensor, ele atualiza a propriedade do sensor no servidor WoT. Isso pode envolver o envio de um POST request ao servidor WoTPy ou atualizar o valor localmente se o servidor WoT estiver sendo executado no próprio ESP32.
+## Tentiva de Configuração como Servidor WoT
 
-No servidor WoTPy, criar um Thing que represente o sensor ML8511, utilizando a biblioteca WoTPy Python. O Thing deve ter uma propriedade que represente o valor atual do sensor.
+Para confirmar a compatibilidade, foi realizada uma tentativa de instalação da biblioteca diretamente no ambiente MicroPython. Inicialmente, foi utilizado o "rshell" para transferir o arquivo "setup.py" do WoTPy para o ESP32. No entanto, verificou-se que esse arquivo não era adequado para ser carregado diretamente no ESP32.
 
-Cada vez que o ESP32 enviar um novo valor do sensor para o servidor WoTPy, atualizar o valor da propriedade no Thing WoTPy que representa o sensor. Isto pode ser feito manipulando a requisição POST que o ESP32 envia e atualizando o valor da propriedade apropriadamente.
+Diante disso, buscou-se modificar a biblioteca para torná-la compatível com o MicroPython. No entanto, esse processo revelou-se complexo e demorado, envolvendo várias considerações:
 
-Finalmente, configurar o WoTPy para expor o Thing na rede. Isto permitirá que outros dispositivos e serviços descubram o Thing e leiam o valor do sensor.
+- Dependências: As dependências da biblioteca precisariam ser compatíveis com o MicroPython. Muitas bibliotecas padrão do Python, como jsonschema e tornado (usadas no wotpy), não funcionam no MicroPython devido à sua complexidade e ao uso de recursos indisponíveis em microcontroladores. Seria necessário encontrar ou criar versões alternativas dessas bibliotecas que fossem compatíveis com o MicroPython.
+- Recursos: As bibliotecas padrão do Python podem fazer uso de recursos e módulos que não estão disponíveis no MicroPython, como threading ou multiprocessing. Seria preciso reescrever partes da biblioteca para não depender desses recursos ou encontrar alternativas para implementar a mesma funcionalidade.
+- Limitações de memória: O MicroPython é projetado para dispositivos com recursos de memória limitados. Portanto, seria necessário garantir que a biblioteca não consumisse muita memória. Isso poderia envolver a reescrita de partes da biblioteca para otimizar o uso de memória.
+- Testes: Após a modificação da biblioteca, seria necessário realizar testes extensivos para garantir que ela ainda funcionasse conforme o esperado. Isso poderia ser desafiador, pois os erros podem ser menos previsíveis e mais difíceis de depurar no MicroPython em comparação com o Python padrão.
 
-Os clientes na rede, que também podem ser implementados usando o WoTPy ou qualquer outra biblioteca que suporte o padrão WoT, podem agora interagir com o Thing. Eles podem ler o valor atual do sensor, assinar atualizações de valor e, se suportado, acionar ações no Thing.
-
-Mas com o decorrer da pesquisa foi descoberto que o MicroPython não suporta o WoTPy, e por isso o ESP32 será utilizado como um cliente.
+Dada a complexidade envolvida na modificação da biblioteca para torná-la compatível com o MicroPython, geralmente é mais viável buscar bibliotecas alternativas que já sejam compatíveis ou projetadas especificamente para o MicroPython.

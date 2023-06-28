@@ -1,0 +1,31 @@
+\chapter{Metodologia}
+
+Neste capítulo, é apresentado a metodologia utilizada para alcançar os objetivos do trabalho, incluindo a seleção das bibliotecas e ferramentas, o estudo das especificações do W3C-WoT, a resolução de problemas de instalação do WoTPy e o desenvolvimento de exemplos de uso e documentação.
+
+\section{Estudo das Especificações do W3C-WoT} \label{estudo}
+
+Inicialmente, será realizada uma análise detalhada das especificações do W3C-WoT \cite{WoTArchitecture}, com foco nos principais conceitos e requisitos para a implementação do WoTPy. O estudo abrangerá os principais componentes do W3C-WoT, como Thing Descriptions \cite{McCool:23:WTT}, Binding Templates \cite{WoTBinding} e Scripting API \cite{WoTScripting}, bem como os protocolos de comunicação suportados, como HTTP, Websockets, MQTT e CoAP.
+
+\section{Seleção e Estudo das Bibliotecas e Ferramentas} \label{dependência}
+
+Serão selecionadas e estudadas diversas bibliotecas e ferramentas relacionadas às dependências do WoTPy. Alguns exemplos são:
+
+\begin{itemize}
+    \item Flask \url{https://flask.palletsprojects.com/en/2.2.x/}: um microframework para desenvolvimento de aplicações Web em Python;
+    \item Requests \url{https://docs.python-requests.org/en/latest/}: uma biblioteca para realizar requisições HTTP em Python;
+    \item Paho MQTT \url{https://www.eclipse.org/paho/clients/python/}: uma biblioteca cliente MQTT para Python;
+    \item Aiocoap \url{https://aiocoap.readthedocs.io/en/latest/}: uma biblioteca para implementação do protocolo CoAP em Python;
+    \item Websockets \url{https://websockets.readthedocs.io/en/stable/}: uma biblioteca para trabalhar com Websockets em Python.
+\end{itemize}
+
+\section{Resolução de Problemas de Instalação} \label{instalação}
+
+Para garantir a fácil implantação e configuração do WoTPy em diferentes ambientes e sistemas, serão identificados e resolvidos problemas de instalação do projeto, ou seja, questões relacionadas a dependências e Docker.
+
+\section{Testes e Validação} \label{teste}
+
+Para garantir a qualidade e a funcionalidade das contribuições feitas, será realizado um conjunto de testes do próprio WoTPy \url{https://github.com/agmangas/wot-py}.
+
+\section{Desenvolvimento de Exemplos de Uso e Documentação} \label{uso}
+
+Com o objetivo de auxiliar desenvolvedores e usuários na implementação do WoTPy em seus projetos IoT, será elaborado um exemplo prático de uso e uma documentação detalhada do projeto. O exemplo inclui o ajuste na comunicação do dispositivo Protetor Solar \cite{ProtetorSolar} (ou similar).
