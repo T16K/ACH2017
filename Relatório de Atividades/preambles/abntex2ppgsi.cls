@@ -302,7 +302,6 @@
 \newcommand{\sourcename}{Fonte}   %%%%%%%%%%%%%%%%%%%%%%%%%%% PPgSI
 \newcommand{\notaname}{Nota}
 \newcommand{\glossarioname}{Gloss\'ario}
-\newcommand{\lefrancoisname}{Lefran\c{c}ois}
 
 %
 \addto\captionsbrazil{% portugues-brasil

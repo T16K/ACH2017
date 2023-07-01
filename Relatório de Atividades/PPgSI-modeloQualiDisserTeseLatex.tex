@@ -73,7 +73,11 @@
 \usepackage{algorithm}			% para ilustrações do tipo algoritmo
 \usepackage{mdwlist}			% para itens com espaço padrão da abnt
 \usepackage[noend]{algpseudocode}			%para ilustrações do tipo algoritmo
-		
+\usepackage{pgfgantt}           % modificar a largura
+\usepackage{adjustbox}
+\usepackage{glossaries}
+\makeglossaries
+
 % ---
 % Pacotes adicionais, usados apenas no âmbito do Modelo Canônico do abnteX2
 % ---
@@ -86,6 +90,13 @@
 \usepackage{hyperref}
 \usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
 \usepackage[alf,abnt-etal-list=0,abnt-etal-text=it]{abntex2cite}	% Citações padrão ABNT
+
+% \documentclass[tikz]{standalone}
+\usepackage{pgfgantt} % https://pt.overleaf.com/latex/examples/gantt-charts-with-the-pgfgantt-package/jmkwfxrnfxnw
+% \title{Gantt Charts with the pgfgantt Package}
+% \begin{document}
+
+\usepackage{xcolor} % text colors https://www.overleaf.com/learn/latex/Using_colours_in_LaTeX
 
 % --- 
 % CONFIGURAÇÕES DE PACOTES
@@ -288,6 +299,11 @@ Relatório de Atividades apresentada à Escola de Artes, Ciências e Humanidades
 % ----
 \begin{document}
 
+% ----------------------------------------------------------
+% Tamanho máximo da monografia final: 30 páginas, contando 
+% desde a introdução até a conclusão.
+% ----------------------------------------------------------
+
 % Retira espaço extra obsoleto entre as frases.
 \frenchspacing 
 
@@ -319,6 +335,37 @@ Relatório de Atividades apresentada à Escola de Artes, Ciências e Humanidades
 % Referências bibliográficas
 % ----------------------------------------------------------
 \bibliography{referencias}
+
+% ----------------------------------------------------------
+% Apêndices
+% ----------------------------------------------------------
+
+% ---
+% Inicia os apêndices
+% ---
+\begin{apendicesenv}
+
+% Imprime uma página indicando o início dos apêndices
+%\partapendices
+
+%-------------------------------------------------------------------------
+% Comentário adicional do PPgSI - Informações sobre ``apêndice''
+%
+% Para todos os captions/(títulos) (de seções, subseções, tabelas, 
+% ilustrações, etc.):
+%     - em maiúscula apenas a primeira letra da sentença (do título), 
+%       exceto nomes próprios, geográficos, institucionais ou Programas ou
+%       Projetos ou siglas, os quais podem ter letras em maiúscula também.
+%
+% Todas  as tabelas, ilustrações (figuras, quadros, gráficos etc. ), 
+% anexos, apêndices devem obrigatoriamente ser citados no texto.
+%      - a citação deve vir sempre antes da primeira vez em que a tabela, 
+%        ilustração etc., aparecer pela primeira vez.
+%
+%-------------------------------------------------------------------------
+\input{sections/13_problema}
+
+\end{apendicesenv}
 
 %---------------------------------------------------------------------
 % INDICE REMISSIVO
