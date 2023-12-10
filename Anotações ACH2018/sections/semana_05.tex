@@ -1,0 +1,67 @@
+\section{Semana 05}
+
+\lecture{5}{18 Setembro 2023}{endpoint SPARQL}
+
+implementação combinada do servidor WoTPy com o servidor SPARQL separado. A ideia é ter dois serviços rodando em paralelo: um para o WoT e outro para lidar com consultas SPARQL relacionadas aos dados semânticos dos dispositivos.
+
+\begin{itemize}
+    \item Definição de Variáveis Globais e Portas:
+        \begin{itemize}
+            \item HTTP\_PORT e SPARQL\_PORT definem as portas nas quais os servidores WoT e SPARQL serão executados, respectivamente.
+            \item uv\_data é uma variável global que armazena os dados do sensor UV.
+        \end{itemize}
+    \item Configuração do Grafo RDF:
+        \begin{itemize}
+            \item O RDF é utilizado para representar dados em um formato padrão, tornando mais fácil o compartilhamento de dados entre diferentes domínios.
+            \item O código define diferentes namespaces e classes que serão usados para representar as informações do sensor UV de forma semântica.
+        \end{itemize}
+    \item Descrição WoT:
+        \begin{itemize}
+            \item A variável description define uma descrição WoT para um sensor UV, que tem uma propriedade chamada UV\_SENSOR.
+        \end{itemize}
+    \item SPARQLHandler:
+        \begin{itemize}
+            \item Esta é uma classe que herda de tornado.web.RequestHandler. Ela é usada para lidar com solicitações HTTP POST no endpoint /sparql.
+            \item Quando recebe uma solicitação, ela lê a consulta SPARQL do corpo da solicitação, executa a consulta no grafo RDF e retorna os resultados em formato JSON.
+        \end{itemize}
+    \item SPARQLServer:
+        \begin{itemize}
+            \item Uma aplicação Tornado que define o servidor SPARQL. Ela apenas contém o endpoint /sparql, que é atendido pelo SPARQLHandler.
+        \end{itemize}
+    \item CustomHTTPServer:
+        \begin{itemize}
+            \item Esta classe estende o HTTPServer de WoTPy. Neste exemplo simplificado, não foram adicionadas funcionalidades extras além do que já está presente no HTTPServer.
+        \end{itemize}
+    \item Métodos de Leitura e Escrita UV:
+        \begin{itemize}
+            \item read\_uv(): Lê os dados do sensor UV da variável global uv\_data.
+            \item write\_uv(): Atualiza a variável uv\_data e modifica o grafo RDF para refletir os novos dados.
+        \end{itemize}
+    \item Funções de Inicialização dos Servidores:
+        \begin{itemize}
+            \item start\_server(): Inicializa e começa a execução do servidor WoTPy.
+            \item start\_sparql\_server(): Inicializa e começa a execução do servidor SPARQL.
+        \end{itemize}
+    \item Execução Principal:
+        \begin{itemize}
+            \item Se o script for executado como o programa principal (não como um módulo importado), ele inicia os dois servidores em paralelo.
+        \end{itemize}
+\end{itemize}
+
+A combinação desses componentes permite que os dispositivos se comuniquem usando o padrão WoT enquanto os dados são representados semânticamente usando RDF. Além disso, o servidor SPARQL permite consultas complexas sobre esses dados semânticos. Por exemplo, é possível consultar todos os dispositivos que têm uma leitura UV acima de um certo valor.
+
+\subsection{Consultas SPARQL}
+
+Para fazer consultas SPARQL usando curl, será necessário enviará um pedido POST com a consulta SPARQL como corpo da solicitação. Supondo uma solicitação de todos os triplos (sujeito-predicado-objeto) no grafo RDF:
+
+\begin{verbatim}
+    curl -X POST -H "Content-Type: text/plain" -d "SELECT * WHERE { ?s ?p ?o . }" http://localhost:8585/sparql
+\end{verbatim}
+
+\begin{itemize}
+    \item X POST: Define o método HTTP como POST.
+    \item H "Content-Type: text/plain": Define o cabeçalho "Content-Type" da solicitação. Dado o seu código anterior, espera-se que as consultas SPARQL sejam enviadas como texto simples (text/plain).
+    \item d "SELECT * WHERE { ?s ?p ?o . }": A consulta SPARQL. Ela pede por todos os sujeitos (?s), predicados (?p) e objetos (?o) no grafo. O * no SELECT significa que você quer todas as variáveis listadas nas cláusulas WHERE.
+    \item http://localhost:8585/sparql: A URL do endpoint SPARQL.
+\end{itemize}
+

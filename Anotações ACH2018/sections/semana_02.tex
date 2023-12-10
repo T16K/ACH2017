@@ -1,0 +1,178 @@
+\section{Semana 02}
+
+\lecture{2}{24 Julho 2023}{Definição dos Conceitos}
+
+A integração proposta envolve a utilização da semântica do WoT (Web of Things) para descrever os dispositivos IoT e suas capacidades, e a representação dessas informações em um grafo de conhecimento, enriquecido com ontologias como a SSN (Semantic Sensor Network) e a SOSA (Sensor, Observation, Sample, and Actuator).
+
+\subsection{Plano de Atividades}
+
+\textbf{Capacitação do Aluno para o Ferramental de Grafos de Conhecimento}
+
+Antes de iniciar o processo de integração, é fundamental que o aluno se familiarize com as ferramentas e conceitos relacionados aos grafos de conhecimento. Para isso, são recomendadas as bibliotecas RDFLib e OWLReady, que permitem a manipulação de RDF (Resource Description Framework) e ontologias em Python.
+
+\textbf{Escolha da Plataforma de Armazenamento de Grafos de Conhecimento}
+
+Uma vez capacitado, o próximo passo é selecionar uma plataforma ou biblioteca para o armazenamento e manipulação dos grafos de conhecimento. As bibliotecas RDFLib e OWLReady, previamente mencionadas, podem ser utilizadas para essa finalidade.
+
+\textbf{Armazenamento das Capacidades do Sensor Codificadas em SSN e Observações em SOSA}
+
+As informações sobre os dispositivos IoT e suas capacidades são descritas utilizando a semântica do WoT e a ontologia SSN. Além disso, as observações realizadas pelos sensores são codificadas utilizando a ontologia SOSA. Essa representação semântica permite que os dados sejam interpretados tanto por humanos quanto por máquinas, facilitando a compreensão e a interoperabilidade.
+
+\textbf{Publicização do Grafo de Conhecimento através de um Endpoint SPARQL}
+
+Para que os dados do grafo de conhecimento sejam acessíveis e consultáveis, é disponibilizado um endpoint SPARQL. Esse endpoint permite que os clientes realizem consultas ao grafo de conhecimento, obtendo informações específicas sobre os dispositivos IoT e suas interações.
+
+\textbf{Definição e Implementação de Casos de Teste da Integração}
+
+Para garantir a qualidade da integração, é fundamental definir e implementar casos de teste que validem o correto funcionamento do sistema integrado. Os casos de teste devem abranger diferentes cenários de interação com os dispositivos IoT e verificar se as respostas e resultados estão de acordo com as expectativas.
+
+\subsection{Detalhamento}
+
+Familiarização com Grafos de Conhecimento:
+Antes de iniciar a integração, é importante que os desenvolvedores envolvidos se familiarizem com os conceitos e ferramentas relacionados aos grafos de conhecimento. Isso inclui o entendimento de ontologias, RDF (Resource Description Framework) e outras tecnologias semânticas.
+
+Escolha de uma Plataforma de Armazenamento de Grafos:
+O próximo passo é selecionar uma plataforma ou biblioteca que suporte o armazenamento e manipulação de grafos de conhecimento. Algumas opções populares incluem RDFLib, OWLReady e GrahpDB. A escolha deve levar em consideração a escalabilidade e as necessidades específicas do projeto.
+
+Descrição dos Dispositivos e Interações usando WoTPy:
+Utilize o WoTPy para descrever os dispositivos IoT e suas interações, utilizando a semântica do WoT. Cada dispositivo deve ser representado por uma "Coisa" com suas propriedades, ações e eventos. É importante que essas descrições sejam detalhadas e padronizadas para garantir a correta representação no grafo de conhecimento.
+
+Mapeamento para Ontologias:
+Mapeie as descrições dos dispositivos e interações feitas em WoTPy para as ontologias relevantes, como a SSN (Semantic Sensor Network) e a SOSA (Sensor, Observation, Sample, and Actuator). Essas ontologias fornecem uma estrutura semântica comum para a representação dos dispositivos IoT no grafo de conhecimento.
+
+Armazenamento no Grafo de Conhecimento:
+Utilize a plataforma escolhida para armazenar as informações dos dispositivos IoT e suas interações no grafo de conhecimento, seguindo as estruturas e relações definidas pelas ontologias mapeadas.
+
+Criação de um Endpoint SPARQL:
+Crie um endpoint SPARQL que permita a consulta e acesso aos dados do grafo de conhecimento. O endpoint SPARQL é essencial para que os clientes possam realizar consultas específicas sobre os dispositivos e interações.
+
+Implementação de Casos de Teste:
+Defina casos de teste para validar a integração do WoTPy com o grafo de conhecimento. Os casos de teste devem abranger cenários típicos de interação e garantir que as respostas e resultados estejam corretos e de acordo com as expectativas.
+
+Realizar Testes e Ajustes:
+Execute os casos de teste e verifique se a integração está funcionando conforme o esperado. Realize ajustes e correções, se necessário, para garantir a qualidade e precisão dos dados no grafo de conhecimento.
+
+Uso e Exploração do Grafo de Conhecimento:
+Após a integração bem-sucedida, o grafo de conhecimento estará disponível para uso e exploração. Os clientes podem realizar consultas SPARQL para obter informações específicas sobre os dispositivos IoT e suas interações, aproveitando os benefícios da representação semântica e a interoperabilidade proporcionada pela integração do WoTPy com grafos de conhecimento.
+
+\subsection{Conceitos Fundamentais}
+
+\subsubsection{Modelo RDF (Resource Description Framework)}
+
+O RDF é um modelo padrão da Web Semântica que permite representar informações na forma de triplas. Ele fornece uma maneira de descrever recursos (entidades) e suas propriedades em formato de sentenças simples e declarativas. Cada sentença é composta por três partes principais: o sujeito, o predicado e o objeto.
+\begin{itemize}
+    \item Sujeito: Representa o recurso ou entidade a ser descrita. É representado por um URI (Identificador Uniforme de Recurso) que identifica unicamente o recurso.
+    \item Predicado: Representa a relação ou propriedade que liga o sujeito ao objeto. Também é representado por um URI e denota um tipo de relação entre os dois.
+    \item Objeto: Representa o valor da propriedade ou outra entidade relacionada ao sujeito. Pode ser um URI, um literal (valor de dados) ou outro recurso.
+\end{itemize}
+
+Por exemplo, a sentença "João é um Engenheiro" pode ser representada em RDF como:
+
+\begin{itemize}
+    \item Sujeito: URI do recurso que representa "João".
+    \item Predicado: URI do predicado que representa "é um".
+    \item Objeto: URI do recurso que representa "Engenheiro".
+\end{itemize}
+
+\subsubsection{Estrutura de Triplas}
+
+As triplas são a base do modelo RDF e formam a estrutura fundamental dos grafos de conhecimento. Elas representam as afirmações sobre os recursos e suas propriedades. Várias triplas juntas criam o grafo de conhecimento, em que os nós são os recursos e as arestas são os predicados que conectam os recursos.
+O formato básico das triplas é:
+(Sujeito, Predicado, Objeto)
+
+Por exemplo, representando informações sobre uma pessoa chamada "Maria":
+
+\begin{itemize}
+    \item Sujeito: URI representando "Maria".
+    \item Predicado: URI representando "nome".
+    \item Objeto: Literal representando o valor "Maria".
+\end{itemize}
+
+Essa tripla "Maria" - "nome" - "Maria" afirma que o nome da pessoa é "Maria".
+
+O RDF é altamente flexível, permitindo a criação de grafos de conhecimento com informações estruturadas e conectadas de maneira eficiente. Através da combinação de várias triplas, é possível representar dados complexos e relacionamentos entre entidades.
+
+Estudar e compreender esses conceitos é essencial para se aprofundar na construção e manipulação de grafos de conhecimento, bem como para tirar o máximo proveito dessa poderosa tecnologia na Web Semântica e em outros domínios de aplicação.
+
+\subsubsection{Ontologias}
+
+Ontologias são esquemas formais que definem a estrutura, os conceitos, as propriedades e as relações de um domínio específico. Elas descrevem um vocabulário comum e compartilhado que permite uma compreensão comum entre humanos e máquinas. As ontologias são fundamentais para adicionar significado e semântica aos dados em um grafo de conhecimento.
+Por exemplo, uma ontologia para o domínio de saúde pode definir conceitos como "Paciente", "Médico", "Doença" e propriedades como "temIdade", "temDiagnóstico". Essas definições claras permitem que os dados relacionados a esses conceitos sejam interpretados corretamente e que consultas e inferências sejam realizadas de maneira precisa.
+
+RDFS (RDF Schema) e OWL (Web Ontology Language):
+RDFS e OWL são linguagens de modelagem usadas para criar ontologias no RDF. RDFS é uma linguagem mais simples, que permite a definição de hierarquias de classes, propriedades e inferências básicas. Já o OWL é mais poderoso e permite a criação de ontologias mais expressivas, incluindo restrições complexas, definição de equivalência e inferências avançadas.
+
+\subsubsection{Inferência}
+
+A inferência é a capacidade de um sistema de realizar deduções lógicas e conclusões a partir dos dados disponíveis no grafo de conhecimento. Com base nas regras definidas nas ontologias e no raciocínio lógico, é possível inferir novas informações que não estão explicitamente declaradas no grafo.
+
+Por exemplo, se o grafo contém a informação de que "Maria é filha de João" e "João é filho de Ana", o sistema pode inferir que "Maria é neta de Ana" utilizando a ontologia que define a relação de parentesco.
+
+\subsubsection{Endpoint SPARQL}
+
+O SPARQL é a linguagem de consulta utilizada para recuperar informações de um grafo de conhecimento. Um endpoint SPARQL é um serviço ou ponto de acesso que permite enviar consultas SPARQL e receber os resultados correspondentes.
+Esse recurso é fundamental para permitir que aplicativos e sistemas externos interajam com o grafo de conhecimento e realizem consultas complexas para obter informações específicas.
+
+\subsubsection{Linked Data}
+
+O conceito de Linked Data (Dados Ligados) refere-se à prática de conectar e interligar grafos de conhecimento através de URIs para criar uma rede global de dados estruturados na Web. Isso permite que diferentes grafos de conhecimento sejam combinados e enriquecidos com informações de outras fontes, aumentando a eficácia, a reutilização e a interoperabilidade dos dados.
+
+\subsubsection{Ingestão e Atualização de Dados}
+
+A ingestão de dados refere-se ao processo de adicionar informações ao grafo de conhecimento, enquanto a atualização é o processo de modificar ou remover informações existentes. Esses processos são essenciais para manter o grafo de conhecimento atualizado e relevante ao longo do tempo, à medida que novos dados são disponibilizados.
+
+\subsection{Próximos Passos}
+
+já se tem uma configuração funcional em que o sensor ESP32 lê os valores do sensor UV e os envia para o servidor WoT. O servidor WoT, por sua vez, expõe esses dados como propriedades de uma "Coisa" na terminologia WoT.
+
+Para criar um grafo de conhecimento com essas informações, é necessário seguir os seguintes passos:
+
+Extração de dados do servidor WoT: Os dados do servidor WoT já estão configurados e funcionais. O próximo passo é extrair esses dados. Os dados UV enviados pelo sensor ESP32 para o servidor WoT são acessíveis através das propriedades da "Coisa" exposta pelo servidor WoT. Esses dados serão usados para construir o grafo de conhecimento.
+
+Criação de um modelo RDF/OWL: Deve-se criar um modelo RDF ou OWL para representar as "Coisas" WoT e suas propriedades. Por exemplo, pode-se ter uma classe "Dispositivo" com subclasses específicas como "SensorUV" e propriedades como "temLeitura". O RDFlib ou OWLReady podem ser usados para criar esse modelo, de acordo com a complexidade do mesmo.
+
+Povoamento do grafo de conhecimento: Os dados extraídos do servidor WoT serão utilizados para criar instâncias das classes e definir suas propriedades. Por exemplo, será criada uma instância da classe "SensorUV" para cada sensor UV no sistema, e a propriedade "temLeitura" será definida para o valor de leitura mais recente.
+
+Armazenamento e consulta do grafo de conhecimento: O grafo de conhecimento será armazenado em um banco de dados RDF ou Triplestore, como o RDFLib's IOMemory ou um banco de dados SPARQL completo, como o Virtuoso. Isso permitirá realizar consultas SPARQL complexas, fazer inferências e outras operações.
+
+Ao seguir essas etapas, as informações do servidor WoT poderão ser representadas em um grafo de conhecimento, o qual poderá ser utilizado para realizar consultas e inferências, além de possibilitar a expansão do sistema IoT incorporando mais dispositivos e tipos de dados.
+
+\subsection{Criação do Grafo de Conhecimento RDF}
+
+ O RDF (Resource Description Framework) é uma estrutura padrão para troca de dados na Web. Ele tem recursos que facilitam a mesclagem de dados, mesmo que os esquemas subjacentes sejam diferentes, e suporta especificamente a evolução dos esquemas ao longo do tempo sem a necessidade de alterar os dados.
+
+No código, o grafo de conhecimento é construído usando a biblioteca rdflib, que é uma biblioteca Python para trabalhar com RDF. O grafo é uma maneira de modelar o conhecimento como uma rede de entidades e relacionamentos.
+
+Aqui estão as partes relevantes do código:
+
+Primeiro, um namespace é criado para as entidades do dispositivo:
+\begin{verbatim}
+n = Namespace("http://wotpyrdfsetup.org/device/")
+\end{verbatim}
+
+Isso é usado para criar URLs únicas para as entidades no RDF. As URLs são importantes porque permitem que as entidades sejam referenciadas univocamente em todo o grafo.
+
+Em seguida, as classes e propriedades são definidas no grafo:
+\begin{verbatim}
+Device = n["Device"]
+UVSensor = n["UVSensor"]
+hasReading = n["hasReading"]
+sensor1 = n["sensor1"]
+\end{verbatim}
+
+Aqui, Device e UVSensor são classes, hasReading é uma propriedade e sensor1 é uma instância de UVSensor.
+
+Depois disso, as relações entre as entidades são adicionadas ao grafo:
+\begin{verbatim}
+g.add((UVSensor, RDFS.subClassOf, Device))
+g.add((sensor1, RDF.type, UVSensor))
+g.add((sensor1, hasReading, Literal(uv_data)))
+\end{verbatim}
+A primeira linha está dizendo que UVSensor é uma subclasse de Device. A segunda linha está dizendo que sensor1 é do tipo UVSensor. A última linha está adicionando a leitura do sensor UV ao sensor1 usando a propriedade hasReading.
+
+Finalmente, o grafo é serializado em formato "turtle" para depuração:
+\begin{verbatim}
+print(g.serialize(format="turtle"))
+\end{verbatim}
+
+O resultado é uma representação gráfica dos dados do sensor em um formato que pode ser facilmente compartilhado e entendido por outras aplicações compatíveis com RDF.

@@ -1,0 +1,20 @@
+\section{Semana 04}
+
+\lecture{4}{28 Agosto 2023}{endpoint SPARQL}
+
+\begin{nota}
+    Com a biblioteca rdflib, não precisa explicitamente escrever strings no formato Turtle, porque a biblioteca oferece uma API mais abstrata e Pythonic para construir grafos RDF.
+\end{nota}
+
+o WoT-py para criar um servidor que expõe "Things" conforme os princípios do Web of Things (WoT) do W3C. Este servidor WoT está construído em cima do framework Tornado para lidar com requisições HTTP.
+
+O WoT-py é um framework específico para criar, expor e consumir "Things" em conformidade com WoT. É uma abstração para a criação de dispositivos IoT compatíveis com WoT.
+
+O Tornado, por outro lado, é um framework web geral para Python. Ele pode lidar com requisições HTTP, WebSocket e outros. É um servidor web assíncrono e também oferece ferramentas para criar aplicativos web.
+
+Para adicionar um endpoint SPARQL ao servidor, está essencialmente adicionando mais funcionalidade ao servidor Tornado subjacente que está sendo usado por WoT-py.
+
+\begin{itemize}
+    \item WoT-py: Esta é a camada superior que está lidando com a exposição e comunicação dos "Things". Ele se encarrega de detalhes específicos de WoT.
+    \item Tornado: Esta é a camada inferior que efetivamente ouve e responde às requisições HTTP. É o servidor web real.
+\end{itemize}

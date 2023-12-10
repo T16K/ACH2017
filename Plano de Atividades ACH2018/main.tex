@@ -1,0 +1,121 @@
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+% abnTeX2: Modelo de Trabalho Academico (tese de doutorado, dissertacao de
+% mestrado e trabalhos monograficos em geral) em conformidade com 
+% ABNT NBR 14724:2011: Informacao e documentacao - Trabalhos academicos -
+% Apresentacao
+%
+% baseado no modelo "Template para elaboração de trabalho acadêmico - versão setembro/2016" fornecido pela Biblioteca do IFSC - http://www.ifsc.edu.br/menu-colecao-abnt (acessado em 2017-08-23)
+% ------------------------------------------------------------------------
+% ------------------------------------------------------------------------
+\documentclass[
+	% -- opções da classe memoir --
+	10pt,				% tamanho da fonte
+	oneside,			% para impressão só frente
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	english,			% idioma adicional para hifenização
+	brazil				% o último idioma é o principal do documento
+	]{abntex2}
+
+%	Todas as indicações de pacotes e configurações estão no arquivo de estilo
+%  chamado estilo-monografia-ifsp.sty.
+\usepackage{preamble}	
+
+% \documentclass[tikz]{standalone}
+\usepackage{pgfgantt} % https://pt.overleaf.com/latex/examples/gantt-charts-with-the-pgfgantt-package/jmkwfxrnfxnw
+% \title{Gantt Charts with the pgfgantt Package}
+% \begin{document}
+
+\usepackage{xcolor} % text colors https://www.overleaf.com/learn/latex/Using_colours_in_LaTeX
+
+%---------------------------------------------------------------------%
+%---------------------------------------------------------------------%
+% Informações de dados para CAPA e FOLHA DE ROSTO
+%---------------------------------------------------------------------%
+%---------------------------------------------------------------------%
+
+\titulo{Integração do WoTPy com Grafos de Conhecimento}
+\autor{Gustavo Tsuyoshi Ariga}
+\local{São Paulo, SP}
+\data{2023}
+\orientador{Professores Fábio Nakano e José de Jesús Pérez-Alcázar}
+\instituicao{%
+  Universidade de São Paulo - USP
+  \par
+  Escola de Artes, Ciências e Humanidades
+  \par
+  Graduação em Sistemas de Informação}
+\tipotrabalho{Plano de Atividades}
+
+% O preambulo deve conter o tipo do trabalho, o objetivo, 
+% o nome da instituição e a área de concentração 
+\preambulo{Plano de atividades apresentado como parte dos requisitos necessários para cumprimento da disciplina ACH2017 ou ACH2018 - Projeto Supervisionado ou de Graduação I ou II.}
+%---------------------------------------------------------------------%
+%\textoaprovacao{}
+
+
+%---------------------------------------------------------------------%
+% Início do documento
+%---------------------------------------------------------------------%
+
+
+\begin{document}
+% Seleciona o idioma do documento (conforme pacotes do babel)
+\selectlanguage{brazil}
+% Retira espaço extra obsoleto entre as frases.
+\frenchspacing 
+
+
+% ----------------------------------------------------------
+% ELEMENTOS PRÉ-TEXTUAIS
+% ----------------------------------------------------------
+% \pretextual
+
+\imprimircapa
+% Folha de rosto - (o * indica que haverá a ficha bibliográfica)
+\imprimirfolhaderosto*
+% ---
+%---------------------------------------------------------------------%
+
+
+% ----------------------------------------------------------
+% Inclusão dos capítulos que estão em outros arquivos .tex
+% ----------------------------------------------------------
+\include{sections/01_resumo}
+\include{sections/02_palavras-chaves}
+\include{sections/03_modalidade}
+\include{sections/04_apresentação}
+\include{sections/05_objetivos}
+\include{sections/06_justificativa}
+\include{sections/07_métodos}
+\include{sections/08_resultados}
+\include{sections/09_cronograma}
+
+
+% ----------------------------------------------------------
+% ELEMENTOS PÓS-TEXTUAIS
+% ----------------------------------------------------------
+\postextual
+% ----------------------------------------------------------
+
+% ----------------------------------------------------------
+% Referências bibliográficas
+% ----------------------------------------------------------
+\bibliography{ref}
+
+
+%---------------------------------------------------------------------
+% INDICE REMISSIVO
+%---------------------------------------------------------------------
+\phantompart
+\printindex
+%---------------------------------------------------------------------
+
+\end{document}
+

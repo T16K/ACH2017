@@ -1,0 +1,37 @@
+\section{Semana 08}
+
+\lecture{8}{24 Outubro 2023}{Memória de Persitência}
+
+Para usar um banco de dados como memória de persistência, será utilizado o SQLite para um começo simples. Ele é um banco de dados relacional que armazena tudo em um único arquivo e não requer um servidor separado.
+
+Para armazenar as observações em um banco de dados SQLite e, posteriormente, realizar consultas SPARQL a partir dessas observações, serão seguido os seguintes passos:
+
+\begin{itemize}
+    \item Inicializar o SQLite Database: Ao iniciar o programa, criar um banco de dados SQLite (se ele ainda não existir) e uma tabela para armazenar as observações UV.
+    \item Adaptar a Função write\_uv: Além de adicionar a observação ao grafo RDF, também insirir a observação no banco de dados SQLite.
+    \item Sincronizar o Grafo RDF com o SQLite: Antes de executar consultas SPARQL, carregar os dados do SQLite no grafo RDF para garantir que ele esteja atualizado.
+\end{itemize}
+
+\subsection{SQLite}
+
+SQLite é um mecanismo de banco de dados SQL embutido, que não requer um processo de servidor dedicado. Ele permite armazenar dados em um arquivo local e é uma opção popular para aplicações que necessitam de um banco de dados leve, como aplicações de desktop ou dispositivos móveis.
+
+\begin{enumerate}
+    \item Inicialização do Banco de Dados:
+        \begin{itemize}
+            \item DATABASE\_NAME = 'observations.db': Define o nome do arquivo onde o banco de dados SQLite será armazenado.
+            \item init\_db(): Esta função é responsável por inicializar o banco de dados. Se a tabela uv\_observations não existir, ela será criada.
+        \end{itemize}
+    \item Adicionando Dados ao Banco de Dados:
+        \begin{itemize}
+            \item add\_to\_db(value): Esta função é usada para adicionar uma observação UV ao banco de dados.
+        \end{itemize}
+    \item Lendo Dados do Banco de Dados e Adicionando ao Gráfico RDF:
+        \begin{itemize}
+            \item load\_data\_to\_graph(): Esta função lê as observações UV do banco de dados SQLite e as adiciona ao gráfico RDF.
+        \end{itemize}
+\end{enumerate}
+
+    Quando o script é iniciado (usando if \_\_name\_\_ == "\_\_main\_\_":), ele começa inicializando o banco de dados com a função init\_db().
+    Ao receber dados UV, o servidor chama a função write\_uv(value), que processa os dados e os adiciona ao banco de dados usando a função add\_to\_db(uv\_val).
+    Quando um cliente faz uma requisição SPARQL para buscar dados, a função load\_data\_to\_graph() é chamada para carregar os dados UV do SQLite e adicioná-los ao gráfico RDF. Em seguida, a consulta SPARQL é executada no gráfico RDF.

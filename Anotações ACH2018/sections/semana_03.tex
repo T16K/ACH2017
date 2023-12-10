@@ -1,0 +1,99 @@
+\section{Semana 03}
+
+\lecture{3}{21 Agosto 2023}{SSN}
+
+Especificação do W3C para o "Semantic Sensor Network (SSN) Ontology", que é uma ontologia para descrever sensores e suas observações. A SSN é usada para representar diferentes aspectos de sistemas de sensoriamento, incluindo o hardware do sensor (como o próprio sensor e o sistema no qual ele está embutido), os processos de sensoriamento e os dados produzidos.
+
+Os exemplos fornecidos no \url{https://www.w3.org/TR/vocab-ssn/#examples} mostram como usar a ontologia SSN para representar várias entidades e relacionamentos em um sistema de sensoriamento. Por exemplo, como representar um sensor, suas capacidades, a propriedade que ele observa, as condições sob as quais opera, etc.
+
+\subsection{endpoint SPARQL}
+
+Implementar um endpoint SPARQL no Tornado implica em criar um ponto de acesso em seu servidor Tornado que aceite consultas SPARQL e retorne resultados. Aqui está um exemplo básico de como você pode fazer isso, usando o Tornado junto com a rdflib para armazenar e consultar um grafo RDF.
+
+Inicie o servidor e execute uma consulta SPARQL usando o parâmetro query na URL. Por exemplo: \url{http://localhost:8888/sparql?query=SELECT%20%3Fsubject%20%3Fobject%20WHERE%20%7B%3Fsubject%20%3Fpredicate%20%3Fobject%20.%7D}
+
+\subsection{SSN}
+
+Para implementar um endpoint SPARQL no Tornado que pode lidar com dados modelados usando a SSN, seria necessário uma abordagem semelhante à fornecida na resposta anterior, mas seu grafo RDF estaria preenchido com dados conforme a ontologia SSN.
+
+Por exemplo, você pode ter um grafo RDF que contém informações sobre um termômetro, que é um sensor que mede a temperatura. Esse termômetro poderia ser modelado usando a ontologia SSN para indicar coisas como a propriedade que ele mede (temperatura), seu alcance de operação (por exemplo, -50°C a 150°C), a unidade de medida que usa (Celsius), etc.
+
+Então, quando alguém envia uma consulta SPARQL para o seu endpoint, eles podem perguntar coisas como "Listar todos os sensores que medem temperatura" ou "Quais são os alcances operacionais de todos os termômetros no sistema?", e o seu servidor Tornado retornaria os resultados apropriados, com base nos dados em seu grafo RDF.
+
+\subsection{Código}
+
+\textbf{Ontologia SSN:}
+
+Adicionei os namespaces para as ontologias ssn e sosa, que são partes essenciais da "Semantic Sensor Network Ontology". ssn é a ontologia original, enquanto sosa é uma ontologia simplificada e alinhada com ssn.
+
+\textbf{Definições de Tipo e Classe:}
+
+Defini UVSensor como uma instância de ssn.System. Na ontologia SSN, um sistema pode ser qualquer coisa, desde um simples sensor até uma plataforma inteira de sensores.
+
+Criei uma classe UVObservation que é uma subclasse de Observation. Isso permite modelar cada leitura UV como uma observação específica.
+
+Defini UVValue como um datatype. Isso permite que valores UV sejam armazenados e semânticamente associados como resultados de observações.
+
+\textbf{Atualização do Grafo:}
+
+Na função write\_uv, ajustei o método de atualização do grafo para usar conceitos da ontologia SSN.
+
+Em vez de simplesmente armazenar uma leitura, agora modelamos uma "observação" realizada pelo sensor. Isso implica que o UVSensor "observa" uma UVObservation, que "tem um resultado" (HasResult) que é o valor UV.
+
+A URI da observação é dinamicamente criada com base no valor UV, garantindo que cada observação seja única.
+
+Removi as entradas antigas da observação antes de adicionar novas para evitar um acúmulo de observações antigas no grafo.
+
+\textbf{Serialização:}
+
+A serialização final do grafo em formato turtle permite que você veja como as informações são representadas usando a ontologia SSN.
+Essas mudanças garantem que os dados do sensor UV sejam representados de uma forma que esteja em conformidade com a ontologia SSN, permitindo uma integração mais rica e significativa com outros sistemas que compreendem e utilizam essa ontologia.
+
+\subsection{Reunião}
+
+Implementando uma Observação no Formato RDF
+
+Uma observação em RDF (Resource Description Framework) refere-se a uma maneira estruturada de representar informações. Vamos destrinchar uma observação e entender o que cada parte dela significa:
+
+\begin{verbatim}
+<Observation/346345> rdf:type sosa:Observation ;
+\end{verbatim}
+
+Aqui, estamos criando uma nova observação com o identificador <Observation/346345>. A relação rdf:type especifica que esta é uma instância da classe sosa:Observation.
+
+\begin{verbatim}
+sosa:observedProperty <sensor/35-207306-844818-0/BMP282/atmosphericPressure> ;
+\end{verbatim}
+
+Esta tripla indica qual propriedade foi observada. Neste caso, a pressão atmosférica é a propriedade observada pelo sensor BMP282.
+
+\begin{verbatim}
+sosa:hasFeatureOfInterest  <earthAtmosphere> ;
+\end{verbatim}
+
+Aqui, estamos especificando qual é o objeto ou entidade de interesse da observação, neste caso, a atmosfera terrestre.
+
+\begin{verbatim}
+sosa:madeBySensor <sensor/35-207306-844818-0/BMP282> ;
+\end{verbatim}
+
+Indica qual sensor fez a observação. Neste caso, é o sensor BMP282.
+
+\begin{verbatim}
+sosa:hasResult [
+  rdf:type qudt-1-1:QuantityValue ;
+  qudt-1-1:numericValue "101936"^^xsd:double ;
+  qudt-1-1:unit qudt-unit-1-1:Pascal ] ;
+\end{verbatim}
+
+Aqui, estamos representando o resultado da observação. O valor observado é de 101936 Pascais.
+
+\begin{verbatim}
+sosa:resultTime [
+  rdf:type time:Instant ;
+  time:inXSDDateTimeStamp "2017-06-06T12:36:13+00:00"^^xsd:dateTimeStamp ] .
+\end{verbatim}
+
+Por último, estamos indicando o momento exato em que a observação foi realizada, codificado no padrão ISO8601.
+
+Dado que as triplas estão armazenadas em um servidor SPARQL, você pode acessá-lo, por exemplo, através de uma interface Tornado, que retorna uma página SPARQL. Em seguida, pode-se escrever uma consulta em SPARQL para recuperar informações específicas. Ao executar essa consulta, o servidor retornará uma lista de resultados correspondentes à consulta.

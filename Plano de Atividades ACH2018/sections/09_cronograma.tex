@@ -1,0 +1,142 @@
+\chapter{Cronograma}
+
+%
+% https://www.overleaf.com/latex/examples/gantt-charts-with-the-pgfgantt-package/jmkwfxrnfxnw
+% A fairly complicated example from section 2.9 of the package
+% documentation. This reproduces an example from Wikipedia:
+% http://en.wikipedia.org/wiki/Gantt_chart
+%
+
+\definecolor{barblue}{RGB}{153,204,254}
+\definecolor{groupblue}{RGB}{51,102,254}
+\definecolor{linkred}{RGB}{165,0,33}
+\renewcommand\sfdefault{phv}
+\renewcommand\mddefault{mc}
+\renewcommand\bfdefault{bc}
+\setganttlinklabel{s-s}{START-TO-START}
+\setganttlinklabel{f-s}{FINISH-TO-START}
+\setganttlinklabel{f-f}{FINISH-TO-FINISH}
+\sffamily
+\begin{adjustbox}{width=1.1\textwidth,center}
+\begin{ganttchart}[
+    canvas/.append style={fill=none, draw=black!5, line width=.75pt},
+    hgrid style/.style={draw=black!5, line width=.75pt},
+    vgrid={*1{draw=black!5, line width=.75pt}},
+    today=4,
+    today rule/.style={
+      draw=black!64,
+      dash pattern=on 3.5pt off 4.5pt,
+      line width=1.5pt
+    },
+    today label font=\small\bfseries,
+    title/.style={draw=none, fill=none},
+    title label font=\bfseries\footnotesize,
+    title label node/.append style={below=7pt},
+    include title in canvas=false,
+    bar label font=\mdseries\small\color{black!70},
+    bar label node/.append style={left=2cm},
+    bar/.append style={draw=none, fill=black!63},
+    bar incomplete/.append style={fill=barblue},
+    bar progress label font=\mdseries\footnotesize\color{black!70},
+    group incomplete/.append style={fill=groupblue},
+    group left shift=0,
+    group right shift=0,
+    group height=.5,
+    group peaks tip position=0,
+    group label node/.append style={left=.6cm},
+    group progress label font=\bfseries\small,
+    link/.style={-latex, line width=1.5pt, linkred},
+    link label font=\scriptsize\bfseries,
+    link label node/.append style={below left=-2pt and 0pt}
+  ]{1}{12}
+  \gantttitle[
+    title label node/.append style={below left=7pt and -3pt}
+  ]{MESES:\quad1}{1}
+  \gantttitlelist{2,...,12}{1} \\
+  
+  \ganttgroup[progress=100]{WBS 1 Primeiro Semestre}{4}{7} \\
+  \ganttbar[
+    progress=100,
+    name=WBS1A
+  ]{\textbf{WBS 1.1} Analisar Especificações do W3C-WoT}{4}{4} \\
+  \ganttbar[
+    progress=100,
+    name=WBS1B
+  ]{\textbf{WBS 1.2} Analisar Dependências do WoTPy}{4}{4} \\
+  \ganttbar[
+    progress=100,
+    name=WBS1C
+  ]{\textbf{WBS 1.3} Resolver Problemas de Instalação}{5}{6} \\
+  \ganttbar[
+    progress=100,
+    name=WBS1D
+  ]{\textbf{WBS 1.4} Realizar Testes de Validação}{5}{6} \\
+  \ganttbar[
+    progress=100,
+    name=WBS1E
+  ]{\textbf{WBS 1.5} Desenvolver Exemplos de Uso}{6}{7} \\
+  
+  \ganttgroup[progress=40]{WBS 2 Segundo Semestre}{8}{12} \\
+    \ganttbar[
+    progress=100,
+    name=WBS2A
+  ]{\textbf{WBS 2.1} Exploração Detalhada de Grafos de Conhecimento}{8}{8} \\
+  \ganttbar[
+    progress=100,
+    name=WBS2B
+  ]{\textbf{WBS 2.2} Integração entre o Grafo de Conhecimento e o WoTPy}{9}{9} \\
+  \ganttbar[
+    progress=40,
+    name=WBS2C
+  ]{\textbf{WBS 2.3} Desenvolvimento do Endpoint SPARQL}{9}{10} \\
+  \ganttbar[
+    progress=0,
+    name=WBS2D
+  ]{\textbf{WBS 2.4} Teste e Validação}{10}{12} \\
+  \ganttbar[
+    progress=0,
+    name=WBS2E
+  ]{\textbf{WBS 2.5} Documentação}{12}{12} \\
+
+  \ganttlink[link type=s-s]{WBS1A}{WBS1B}
+  \ganttlink[link type=f-s]{WBS1B}{WBS1C}
+  \ganttlink[link type=f-f]{WBS1C}{WBS1D}
+  \ganttlink[link type=f-s]{WBS1D}{WBS1E}
+
+  \ganttlink[link type=f-s]{WBS2A}{WBS2B}
+  \ganttlink[link type=f-s]{WBS2B}{WBS2C}
+  \ganttlink[link type=f-s]{WBS2C}{WBS2D}
+  \ganttlink[link type=f-s]{WBS2D}{WBS2E}
+  
+  % \ganttlink[
+    % link type=f-f,
+    % link label node/.append style=left
+  % {WBS1C}{WBS1D}
+  
+\end{ganttchart}
+\end{adjustbox}
+
+%
+% A simpler example from the package documentation:
+%
+
+% \begin{ganttchart}{1}{12}
+  % \gantttitle{2011}{12} \\
+  % \gantttitlelist{1,...,12}{1} \\
+  % \ganttgroup{Group 1}{1}{7} \\
+  % \ganttbar{Task 1}{1}{2} \\
+  % \ganttlinkedbar{Task 2}{3}{7} \ganttnewline
+  % \ganttmilestone{Milestone}{7} \ganttnewline
+  % \ganttbar{Final Task}{8}{12}
+  % \ganttlink{elem2}{elem3}
+  % \ganttlink{elem3}{elem4}
+% \end{ganttchart}
+
+% \end{document}
+
+Ao dar início ao segundo semestre, será promovida uma revisão meticulosa da literatura pertinente que envolve a Web das Coisas (WoT), WoTPy e grafos de conhecimento (\ref{estudo}). Esta revisão tem por objetivo consolidar o entendimento teórico, garantindo assim uma base sólida para as etapas subsequentes. Subsequentemente, será implementado o processo de integração do WoTPy com os grafos de conhecimento (\ref{integração}), visando uma harmonização eficaz entre estas duas ferramentas essenciais.
+
+Posteriormente, a atenção será dirigida ao desenvolvimento do endpoint SPARQL (\ref{endpoint}), assegurando uma interface robusta e eficiente para consultas.
+
+Ao nos aproximarmos do encerramento do segundo semestre, uma série de testes e validações será conduzida com o intuito de certificar que a solução elaborada atenda de forma precisa às necessidades previamente estabelecidas (\ref{teste}). Por fim, será redigida uma documentação detalhada e rigorosa, garantindo que os usuários e interessados possam compreender, implementar e se beneficiar da solução proposta (\ref{documentação}).
+

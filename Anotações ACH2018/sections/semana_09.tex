@@ -1,0 +1,13 @@
+\section{Semana 09}
+
+\lecture{9}{05 Novembro 2023}{Memória de Persitência}
+
+É importante notar que o método g.remove((UVSensor, Observes, None)) está sendo chamado, mas isso não significa necessariamente que todos os triplos existentes relacionados a observações anteriores estão sendo removidos. O método remove() está sendo aplicado de forma específica ao triplo que liga UVSensor com qualquer objeto através da propriedade Observes.
+
+Este comportamento sugere que a intenção é assegurar que o sensor UV (UVSensor) esteja sempre ligado à última observação. No entanto, um sensor pode observar múltiplas instâncias de observações, e cada uma dessas observações pode ter seu próprio resultado. Normalmente, não se removeria observações anteriores a menos que você desejasse manter apenas a mais recente por algum motivo específico, o que não é comum em cenários de coleta de dados de sensores onde você deseja manter um histórico.
+
+A remoção dos triplos existentes antes de adicionar novos pode ser um erro no design do sistema, ou pode ser intencional para um caso de uso específico não explicado no código fornecido. Se o objetivo é ter um histórico de observações, então essa linha deveria ser removida para permitir que o grafo acumule triplos de todas as observações sem sobreposição.
+
+Para manter o histórico de observações sem duplicar informações, poderia ser usado um identificador único para cada observação. Esse identificador pode ser uma combinação de data e hora da observação, um número sequencial ou qualquer outra forma de chave única que faça sentido no contexto da sua aplicação.
+
+Usando essa abordagem, cada observação terá um URI único e você pode manter todas as observações sem se preocupar com duplicatas. O método datetime.utcnow().strftime("\%Y\%m\%d\%H\%M\%S\%f") gera uma string de data e hora em UTC que será quase certamente única para cada chamada, especialmente se as observações não forem geradas mais de uma vez por milissegundo, o que é o caso na maioria das aplicações práticas.

@@ -1,0 +1,26 @@
+\section{Semana 10}
+
+\lecture{10}{19 Novembro 2023}{Memória de Persitência}
+
+\subsection{Mapear o Volume para um Diretório no Host}
+
+Quando inicia o contêiner, mapear um diretório no host para o volume dentro do contêiner. No comando docker run, usar a flag -v ou --mount. Por exemplo:
+
+\begin{verbatim}
+    docker run -v /path/on/host:/path/in/container myimage
+\end{verbatim}
+
+Neste exemplo, /path/on/host é o caminho no sistema de arquivos do host e /path/in/container é o caminho dentro do contêiner onde você deseja que os dados sejam armazenados.
+
+Os dados escritos pelo aplicativo no diretório /path/in/container dentro do contêiner serão armazenados no diretório /path/on/host no sistema de arquivos do host. Isso significa que mesmo se o contêiner for destruído, os dados ainda estarão disponíveis no host.
+
+Mapear o diretório examples/uv_sensor do seu sistema host diretamente para /app dentro do contêiner.
+
+
+Como /app é o diretório de trabalho padrão no contêiner, quando você executa ls, ele lista os conteúdos do diretório mapeado, que é o mesmo que o diretório de trabalho. Por isso, você vê os arquivos de examples/uv_sensor do seu sistema host.
+
+Para evitar problemas de permissão,  configurar o Docker para executar seus contêineres como um usuário não-root. Isso pode ser feito especificando um usuário no Dockerfile ou no comando docker run com a opção --user.
+
+\begin{verbatim}
+    docker container run --network host -it --rm --user t1k -v $PWD/examples/uv_sensor:/app '' sh
+\end{verbatim}

@@ -1,0 +1,160 @@
+\section{Semana 06}
+
+\lecture{6}{25 Setembro 2023}{Mecanismo de Persistência}
+
+O armazenamento persistente refere-se a qualquer forma de armazenamento de dados que mantém a integridade e a disponibilidade desses dados, mesmo após a interrupção ou reinicialização de um sistema. Em outras palavras, os dados persistidos não são perdidos quando a energia é desligada, quando o sistema é reiniciado ou quando a aplicação é encerrada.
+
+A rdflib oferece vários mecanismos de persistência, permitindo armazenamento de grafos RDF em diversos backends de armazenamento, desde bancos de dados relacionais até sistemas de banco de dados NoSQL. O uso de persistência é especialmente útil quando se trabalha com grandes conjuntos de dados ou quando se quer persistir dados entre execuções de um programa.
+
+\textbf{Armazenamento em Memória (para conjuntos de dados menores):}
+
+\begin{verbatim}
+from rdflib import Graph
+
+g = Graph(store='IOMemory')
+\end{verbatim}
+
+\textbf{Berkeley DB:}
+
+É um software de banco de dados de alto desempenho utilizado para armazenamento chave-valor. A rdflib tem um plugin para Berkeley DB (via bsddb3), permitindo que os dados RDF sejam armazenados de forma persistente usando Berkeley DB.
+
+\textbf{SQLite:}
+
+É uma biblioteca C que fornece um banco de dados relacional leve. A rdflib também possui um plugin para SQLite, o que significa que você pode armazenar seu grafo RDF em um banco de dados SQLite.
+
+\textbf{OWLReady:}
+
+É uma biblioteca Python dedicada ao uso de ontologias OWL. A biblioteca permite carregar, modificar e salvar ontologias OWL. Por baixo dos panos, o OWLReady usa SQLite para armazenar dados de ontologia de forma persistente. Contudo, vale ressaltar que OWLReady não usa rdflib por padrão; ele tem sua própria maneira de lidar com ontologias e RDF.
+
+\textbf{Usando rdflib com Berkeley DB:}
+
+\begin{verbatim}
+from rdflib import Graph
+
+storepath = "path_to_directory_for_store"
+g = Graph('Sleepycat', identifier='testgraph')
+g.open(storepath, create=True)
+\end{verbatim}
+
+\textbf{Usando rdflib com SQLite:}
+
+\begin{verbatim}
+from rdflib import Graph
+
+storepath = "path_to_sqlite_database_file"
+g = Graph('SQLite', identifier='testgraph')
+g.open(storepath, create=True)
+\end{verbatim}
+
+\textbf{Usando OWLReady com SQLite:}
+
+\begin{verbatim}
+from owlready2 import *
+
+default_world.set_backend(filename="path_to_sqlite_database_file")
+\end{verbatim}
+
+Integrar rdflib e OWLReady, precisará fazer um trabalho manual, como importar dados de rdflib para OWLReady ou vice-versa. No entanto, não há uma integração direta out-of-the-box entre rdflib e OWLReady, e precisaria cuidadosamente gerenciar as operações para evitar conflitos ou sobreposição de dados.
+
+Berkeley DB pode ser mais rápido para certas operações e tem uma longa história de uso em ambientes de alto desempenho, enquanto SQLite oferece uma solução mais leve e portátil com um modelo relacional completo. Se usar o OWLReady, pode fazer sentido ficar com SQLite, já que é o backend padrão da OWLReady.
+
+\subsection{Armazenamento Persistente com Berkeley DB}
+
+O Berkeley DB (comumente abreviado como BDB) é uma biblioteca de software destinada a fornecer um mecanismo de armazenamento de banco de dados de alto desempenho para aplicativos. Originalmente desenvolvida pela Sleepycat Software, a BDB é agora de propriedade e mantida pela Oracle Corporation.
+
+Modelo de Armazenamento de Chave-Valor: No seu núcleo, o Berkeley DB é um banco de dados orientado a chave-valor. Isso significa que ele armazena dados como pares de chave-valor, onde a chave é usada para recuperar rapidamente o valor associado.
+
+Incorporável: Ao contrário de muitos sistemas de gerenciamento de banco de dados (DBMS) que são projetados para serem executados como serviços autônomos, o Berkeley DB é uma biblioteca que pode ser vinculada diretamente a um aplicativo. Isso o torna mais leve e, muitas vezes, mais rápido para certos usos do que um DBMS completo.
+
+Transações ACID: O Berkeley DB suporta propriedades ACID (Atomicidade, Consistência, Isolamento e Durabilidade), o que o torna confiável para armazenar dados críticos.
+
+Concorrência: Ele suporta acesso concorrente por múltiplos threads ou processos e utiliza bloqueios para manter a integridade dos dados.
+
+Recuperação após Falhas: O BDB inclui suporte para recuperação após falhas, permitindo que os aplicativos se recuperem de falhas de hardware ou software sem perda de dados.
+
+Tipos de Armazenamento: Além do básico armazenamento de chave-valor, o BDB oferece outros modelos, como Queues, Pilhas e Armazenamento baseado em Recursos.
+
+Flexibilidade: O BDB não impõe um esquema específico aos dados e pode armazenar quase qualquer tipo de dados binários como valor, desde strings simples até objetos serializados ou blobs.
+
+Integração com Linguagens e Sistemas: Berkeley DB oferece APIs para várias linguagens de programação, incluindo C, C++, Java, Perl, Python, entre outras. Ele também pode ser usado como um backend de armazenamento para sistemas maiores, como o OpenLDAP.
+
+Licenciamento: O BDB é software proprietário. Ele foi originalmente lançado sob uma licença que permitia seu uso gratuito em aplicações de código aberto, mas essa política foi alterada depois que a Oracle adquiriu a Sleepycat. Portanto, é importante verificar o licenciamento atual se você estiver considerando usar o BDB em um produto ou projeto.
+
+Uso: Dado o seu design leve e rápido, o Berkeley DB é comumente usado em sistemas embutidos, sistemas operacionais, aplicações de email e web browsers, entre outros.
+
+\textbf{Instalar a biblioteca do Berkeley DB:}
+
+No Dockerfile, instalar as bibliotecas e ferramentas do Berkeley DB.
+
+\begin{verbatim}
+RUN apt-get update && apt-get install -y libdb5.3-dev
+\end{verbatim}
+
+\textbf{Instalar a biblioteca Python para o Berkeley DB:}
+
+Será necessário o módulo bsddb3 para usar o Berkeley DB com Python. Adicionar este módulo ao requirements.txt ou instalar diretamente usando pip no Dockerfile.
+\begin{verbatim}
+pip install bsddb3
+\end{verbatim}
+
+\begin{verbatim}
+
+# Adicione os imports necessários no início do seu código
+from rdflib.plugins.stores import Sleepycat
+
+# ...
+
+# Especifique o diretório onde o Berkeley DB armazenará os dados
+STORE_DIR = "path_to_directory_for_berkeleydb_store"
+
+# Substitua a criação do gráfico em memória pelo Berkeley DB
+g = Graph('Sleepycat', identifier='mygraph')
+g.open(STORE_DIR, create=True)
+
+# ...
+
+# Adicione uma função de encerramento para garantir que o Berkeley DB seja fechado corretamente
+def close_store():
+    g.close()
+
+if __name__ == "__main__":
+    # ...
+
+    # Certifique-se de chamar close_store antes de sair do programa
+    try:
+        IOLoop.current().start()
+    finally:
+        close_store()
+    
+\end{verbatim}
+
+Quando se trabalha com armazenamento persistente, erros podem ocorrer (por exemplo, problemas de permissão de escrita, o banco de dados está corrompido, etc.). Tratar possíveis erros com blocos try-except adequados. Além disso, é uma boa prática sempre fechar o banco de dados corretamente para garantir que todos os dados sejam gravados e que os recursos sejam liberados.
+
+\textbf{Consultar os dados usando o endpoint SPARQL:}
+\begin{verbatim}
+    curl -X POST -H "Content-Type: text/plain" -d "SELECT * WHERE { ?s ?p ?o . }" http://localhost:8585/sparql
+\end{verbatim}
+
+\subsection{Capacidade de serializar (ou exportar) dados RDF em diferentes formatos}
+
+Formato Turtle (TTL):
+print(g.serialize(format="turtle").decode("utf-8"))
+
+Formato XML (RDF/XML):
+print(g.serialize(format="xml").decode("utf-8"))
+
+Formato Notation3 (N3):
+print(g.serialize(format="n3").decode("utf-8"))
+
+Formato JSON-LD:
+print(g.serialize(format="json-ld").decode("utf-8"))
+
+Formato NTriples (NT):
+print(g.serialize(format="nt").decode("utf-8"))
+
+\begin{verbatim}
+with open("output.ttl", "wb") as file:
+    file.write(g.serialize(format="turtle"))
+\end{verbatim}
+
+Ao usar a função serialize, o formato desejado é especificado usando o argumento format. A saída da função é um objeto bytes, por isso é frequentemente decodificado para utf-8 para exibição ou armazenamento em formato de texto.

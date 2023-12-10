@@ -1,0 +1,79 @@
+\chapter{Segundo Semestre}
+
+\lecture{1}{17 Julho 2023}{Planejamento}
+
+\section{Semana 01}
+
+A integração do WoTPy com grafos de conhecimento pode ser realizada utilizando a semântica do WoT para descrever dispositivos IoT e suas interações, e em seguida representar essas informações em um grafo de conhecimento.
+
+\subsection{Descrição dos dispositivos e interações utilizando o WoT}
+
+O WoT oferece uma abordagem padronizada e unificada para descrever e interagir com dispositivos e serviços da Internet das Coisas (IoT). Essa abordagem utiliza o conceito de "Coisas", que são representadas por Descrições de Coisas (TDs).
+
+Cada TD é um documento baseado em JSON-LD que fornece metadados sobre uma "Coisa", incluindo seu nome, descrição, localização, metadados de segurança e as interações disponíveis, que podem ser propriedades, ações e eventos.
+
+Propriedades representam o estado de uma "Coisa", como a temperatura atual de um sensor de temperatura ou o status de uma lâmpada (ligada/desligada). Algumas propriedades podem ser lidas e outras podem ser escritas, permitindo a alteração do estado da "Coisa".
+
+Ações representam funções que podem ser executadas em uma "Coisa". Por exemplo, é possível ter uma ação para redefinir um dispositivo ou iniciar uma máquina de lavar. As ações são invocadas por meio de solicitações enviadas à "Coisa", que então executa a ação e retorna uma resposta.
+
+Eventos representam notificações enviadas por uma "Coisa". Por exemplo, um sensor de porta pode enviar um evento quando a porta é aberta, ou uma lâmpada pode enviar um evento quando seu status muda. Os eventos são enviados da "Coisa" para os consumidores que se inscreveram para recebê-los.
+
+Com o WoTPy, é possível criar um servidor WoT que hospeda várias "Coisas" e seus TDs. Esse servidor expõe uma interface de rede (geralmente HTTP, mas também pode ser CoAP, MQTT, etc.) que permite aos consumidores descobrir as "Coisas", obter seus TDs e interagir com elas.
+
+Para criar uma "Coisa" com o WoTPy, é necessário criar uma instância da classe "Thing" e adicionar propriedades, ações e eventos a ela. Em seguida, a classe "Servient" pode ser utilizada para criar um servidor WoT que hospeda a "Coisa". A classe "Servient" também oferece métodos para iniciar e parar o servidor.
+
+Além disso, o WoTPy também permite a criação de clientes WoT, que podem consumir TDs e interagir com as "Coisas" por meio deles. O cliente WoT pode ser utilizado para descobrir "Coisas" em um servidor WoT, obter os TDs das "Coisas" e ler/escrever propriedades, invocar ações e se inscrever para receber eventos.
+
+Para criar um cliente WoT com o WoTPy, é possível utilizar a classe "ConsumedThing", que fornece métodos para interagir com uma "Coisa" com base em seu TD. Essa classe é utilizada em conjunto com a classe "Servient", que oferece métodos para criar e gerenciar os consumidores WoT.
+
+\subsection{Criação do Grafo de Conhecimento}
+
+Um grafo de conhecimento é um modelo de dados que representa entidades (nós) e as relações entre elas (arestas). No contexto do Web of Things (WoT), essas entidades podem ser as "Coisas" (dispositivos IoT) e suas interações, como propriedades, ações e eventos.
+
+Para criar um grafo de conhecimento a partir das descrições do WoT, é necessário identificar as entidades e as relações a partir dos Thing Descriptions (TDs). Cada TD contém informações que podem ser mapeadas para nós e arestas do grafo.
+
+Nós: Cada "Coisa" descrita em um TD pode ser considerada um nó no grafo. Além disso, cada propriedade, ação e evento de uma "Coisa" também pode ser considerado um nó separado. Por exemplo, se houver uma "Coisa" que seja um sensor de temperatura, pode-se ter um nó para o sensor, um nó para a propriedade de leitura de temperatura e um nó para o evento de notificação de temperatura excedida.
+
+Arestas: As relações entre as "Coisas" e suas interações podem ser representadas como arestas no grafo. As arestas devem indicar a direção da relação. Por exemplo, pode-se ter uma aresta do nó do sensor para o nó de leitura de temperatura, indicando que o sensor "tem uma propriedade" de leitura de temperatura. Da mesma forma, pode-se ter uma aresta do nó do sensor para o nó de notificação de temperatura excedida, indicando que o sensor "pode gerar um evento" de notificação de temperatura excedida.
+
+Uma vez identificados os nós e as arestas, é possível utilizar uma biblioteca de manipulação de grafos para criar o grafo de conhecimento. Existem diversas bibliotecas de Python disponíveis para essa finalidade, como:
+
+\begin{itemize}
+    \item NetworkX: É uma biblioteca de Python para criação, manipulação e estudo de redes complexas. O NetworkX permite a criação de grafos direcionados e não direcionados, além de oferecer algoritmos para cálculo de caminhos mais curtos, detecção de comunidades, centralidade, entre outros.
+    \item graph-tool: É uma biblioteca de Python para manipulação e análise de grafos. O graph-tool oferece funcionalidades semelhantes ao NetworkX, mas é otimizado para eficiência com grafos grandes.
+    \item PyGraphviz: É uma interface Python para a biblioteca Graphviz, que é utilizada para criar visualizações de grafos. O PyGraphviz permite a criação, manipulação e desenho de grafos, mas não oferece muitos algoritmos para análise de grafos.
+\end{itemize}
+
+Ao escolher uma biblioteca, é importante considerar as necessidades específicas, como o tamanho do grafo, a complexidade das análises que serão realizadas e se é necessário ou não recursos de visualização.
+
+\subsection{Adição de Semântica ao Grafo de Conhecimento}
+
+A adição de semântica ao grafo de conhecimento envolve a atribuição de significados aos nós e arestas que sejam compreendidos não apenas por humanos, mas também por máquinas. Essa semântica permite que as máquinas entendam e interpretem os dados do grafo, facilitando a integração, busca, análise e inferência de dados.
+
+Para adicionar semântica ao grafo, é necessário atribuir a cada nó e aresta um tipo de uma ontologia. Uma ontologia é uma descrição formal de um domínio de conhecimento que inclui a definição dos conceitos desse domínio (chamados de classes), as propriedades desses conceitos (chamadas de propriedades de objetos ou de dados) e as restrições sobre essas propriedades.
+
+Por exemplo, é possível utilizar a ontologia SSN (Semantic Sensor Network) para adicionar semântica aos nós e arestas que representam sensores e suas interações. A SSN inclui classes como "Sensor", "Observation", "Property" e "Event", além de propriedades como "observes", "hasProperty" e "detects".
+
+Para adicionar semântica ao grafo de conhecimento com a SSN, é possível seguir as seguintes etapas:
+
+\begin{enumerate}
+    \item Atribuir a classe "Sensor" ao nó que representa o sensor de temperatura.
+    \item Atribuir a classe "Property" ao nó que representa a leitura de temperatura.
+    \item Atribuir a propriedade "hasProperty" à aresta que conecta o sensor à leitura de temperatura.
+    \item Atribuir a classe "Event" ao nó que representa a notificação de temperatura excedida.
+    \item Atribuir a propriedade "detects" à aresta que conecta o sensor à notificação de temperatura excedida.
+\end{enumerate}
+
+Existem diversas ferramentas e bibliotecas disponíveis para adicionar semântica ao grafo de conhecimento, como RDFlib (uma biblioteca de Python para trabalhar com RDF, uma linguagem padrão para representar grafos de conhecimento semântico), Protégé (uma ferramenta de edição e gerenciamento de ontologias) e Apache Jena (uma estrutura de programação para construir aplicações de Web Semântica).
+
+Após adicionar semântica ao grafo de conhecimento, é possível utilizar uma linguagem de consulta como SPARQL para realizar consultas complexas e inferências nos dados. Além disso, a semântica permite a integração do grafo com outros grafos de conhecimento semântico, melhorando a interoperabilidade e possibilitando a reutilização de dados.
+
+\subsection{Utilização do Grafo de Conhecimento}
+
+Consultas SPARQL: A linguagem de consulta SPARQL permite realizar consultas complexas no grafo de conhecimento. É possível utilizar SPARQL para encontrar todas as "Coisas" que possuem uma determinada propriedade, ou para encontrar todas as ações que podem ser invocadas em um determinado conjunto de "Coisas". Além disso, é possível realizar consultas que envolvem múltiplas entidades e relações, por exemplo, encontrar todas as "Coisas" que podem observar uma propriedade específica e gerar um evento específico.
+
+Inferência de novas relações: Ao analisar o grafo de conhecimento, é possível inferir novas relações que não foram explicitamente declaradas. Por exemplo, se duas "Coisas" possuem várias propriedades e ações em comum, é possível inferir que elas são de alguma forma semelhantes ou relacionadas. Da mesma forma, se uma "Coisa" possui uma ação que afeta a propriedade de outra "Coisa", é possível inferir que existe uma relação causal entre as duas "Coisas".
+
+Melhor interoperabilidade: Uma vez que o grafo de conhecimento codifica a semântica das "Coisas" e suas interações, ele permite que os clientes que compreendem essa semântica interajam de maneira mais eficiente com as "Coisas". Por exemplo, um cliente pode utilizar o grafo para descobrir como interagir com uma nova "Coisa" que nunca encontrou antes, simplesmente analisando suas propriedades, ações e eventos e comparando-os com os de outras "Coisas" conhecidas. Além disso, a semântica permite que o cliente compreenda o significado das interações, o que pode ajudar a evitar erros e melhorar a qualidade da interação.
+
+Integração e reutilização de dados: O grafo de conhecimento semântico facilita a integração de dados provenientes de diferentes fontes e a reutilização de dados em diferentes contextos. Como as entidades e relações no grafo são anotadas com tipos de uma ontologia, é mais fácil mapear e combinar dados de diferentes grafos que utilizam a mesma ontologia ou ontologias compatíveis. Além disso, os dados anotados semanticamente são mais fáceis de compreender e reutilizar, pois seu significado é explicitamente declarado e codificado de forma padronizada.
