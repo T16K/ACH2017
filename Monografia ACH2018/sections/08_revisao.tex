@@ -1,0 +1,41 @@
+\chapter{Revisão Bibliográfica}
+
+\section{Fundamentos da Internet das Coisas (IoT)}
+
+Conforme descrito por \cite{Ashton2009}, o termo ``Internet das Coisas'' foi cunhado para descrever uma rede onde não apenas os computadores, mas qualquer objeto poderia estar conectado e comunicar-se. Esta ideia evoluiu significativamente, como discutido em obras como a de \cite{Gubbi2013}, que exploram a transição da IoT de um conceito teórico para uma realidade prática, permeando diversos aspectos da vida cotidiana e empresarial.
+
+No setor doméstico, a IoT transformou o conceito de casa inteligente, integrando dispositivos como termostatos, sistemas de segurança e eletrodomésticos, conforme detalhado por \cite{Swan2012}. A automação residencial, impulsionada pela IoT, tem melhorado significativamente a conveniência e a eficiência energética em lares modernos.
+
+No contexto industrial, conhecido como Indústria 4.0, a IoT tem um papel crucial, conforme descrito por \cite{Lu2017}. A integração de sensores e máquinas em redes de comunicação avançadas tem permitido uma automação mais sofisticada, manutenção preditiva e otimização de processos.
+
+No setor de saúde, a IoT tem contribuído para o desenvolvimento de soluções de monitoramento de saúde remoto e dispositivos médicos conectados, como destacado por \cite{Islam2015}. Essas tecnologias estão revolucionando o cuidado ao paciente, permitindo um acompanhamento mais preciso e contínuo das condições de saúde.
+
+A IoT também tem um papel transformador em tornar as cidades mais inteligentes e sustentáveis, como discutido por \cite{Zanella2014}. A implementação de dispositivos IoT em infraestruturas urbanas está facilitando a gestão de tráfego, a otimização de recursos e a melhoria dos serviços públicos.
+
+\section{Desafios de Interoperabilidade na Internet das Coisas (IoT)}
+
+Um dos principais trabalhos que fundamenta esta discussão é o de \cite{Miorandi2012}, que detalha as complexidades inerentes à interoperabilidade na IoT. Este estudo esclarece como a variedade de padrões e protocolos cria um ambiente desafiador para a integração efetiva de dispositivos IoT. A diversidade tecnológica presente na IoT exige uma abordagem cuidadosa para garantir que os dispositivos possam comunicar-se e operar harmoniosamente, independente de suas especificações individuais.
+
+Os impactos negativos da falta de interoperabilidade, analisados por \cite{Atzori2010}, abordam como a incompatibilidade entre dispositivos pode levar a ineficiências operacionais e dificuldades em escalar sistemas IoT. Este problema é particularmente relevante em aplicações de IoT que exigem a integração de múltiplos dispositivos e sistemas para funcionar de maneira eficiente e coordenada.
+
+% Para enfrentar esses desafios, foram exploradas as soluções propostas na literatura, com destaque para o trabalho de \cite{Want2015}. Este estudo examina várias abordagens para superar as barreiras de interoperabilidade, incluindo a padronização de protocolos e o desenvolvimento de gateways universais. Tais soluções visam facilitar a comunicação e a cooperação entre dispositivos e plataformas distintas, permitindo a criação de sistemas IoT mais integrados e eficientes.
+
+Além da perspectiva técnica, a interoperabilidade na IoT é também uma questão estratégica, conforme indicado por \cite{Kortuem2010}. Este estudo ressalta a importância de abordagens colaborativas e padrões abertos para alcançar uma interoperabilidade eficaz. A interoperabilidade não se limita a superar desafios técnicos; ela também desempenha um papel crucial no desenvolvimento e na adoção generalizada de tecnologias IoT. A colaboração entre diferentes \textit{stakeholders} e a adoção de padrões abertos são essenciais para o avanço harmonioso da IoT. Neste contexto, o padrão \textit{W3C-Web of Things} (WoT) emerge como uma solução, buscando estabelecer uma base comum para a comunicação e interação entre dispositivos IoT heterogêneos.
+
+\section{W3C-Web of Things (WoT) e WoTPy}
+
+Um dos estudos fundamentais para entender o W3C-WoT é o de \cite{Kovatsch2023}, que apresenta uma análise detalhada do padrão, destacando sua contribuição para a interoperabilidade em sistemas IoT. O W3C-WoT fornece um conjunto de diretrizes e protocolos que facilitam a comunicação entre dispositivos com diferentes arquiteturas e protocolos de comunicação. Este padrão aborda a necessidade crítica de uma linguagem comum em um ambiente caracterizado pela diversidade tecnológica, permitindo que os dispositivos ``falem a mesma língua'', independentemente de suas especificações individuais.
+
+Neste cenário, o WoTPy emerge como uma ferramenta valiosa. Como descrito por \cite{Garcia2019}, o WoTPy é um \textit{framework} experimental baseado no \textit{Web of Things} (WoT) do \textit{World Wide Web Consortium} (W3C). Ele é projetado para resolver o problema da interoperabilidade entre uma ampla variedade de dispositivos e plataformas, alavancando a \textit{Web} como meio de habilitar a interoperabilidade.
+
+O \textit{framework} do WoTPy destaca-se pela sua flexibilidade e capacidade de integração, apresentado em \cite{Nakano2023}. Uma de suas características mais notáveis é a implementação de uma gama abrangente de protocolos de vinculação, como HTTP, \textit{WebSockets}, MQTT e CoAP. Essa versatilidade permite que o WoTPy se comunique eficazmente em diferentes camadas do modelo de computação em névoa (\textit{fog computing}), facilitando a integração de dispositivos IoT em vários níveis de infraestrutura.
+
+Contudo, tanto o WoTPy quanto o padrão W3C-WoT enfrentam desafios e limitações. As áreas que necessitam de desenvolvimento adicional incluem a gestão eficiente de uma vasta quantidade de dados gerados por dispositivos IoT e a integração de dispositivos com diferentes protocolos e padrões de comunicação. Estes desafios destacam a necessidade contínua de pesquisa e desenvolvimento para aprimorar a interoperabilidade na IoT.
+
+\section{Grafos de Conhecimento na IoT}
+
+A integração de grafos de conhecimento na Internet das Coisas (IoT) oferece um método estruturado para representar e analisar as relações complexas entre dispositivos, dados e interações em ambientes IoT. Inicialmente, a pesquisa de \cite{Tsiatsis2018} fornece uma base para compreender a relevância dos grafos de conhecimento na IoT. Em seu estudo, eles examinam como os grafos de conhecimento podem ser utilizados para melhorar a gestão e a interpretação de dados em sistemas IoT. Este trabalho destaca a flexibilidade dos grafos de conhecimento na representação de relações complexas e na facilitação de uma compreensão mais profunda das interações entre dispositivos e dados.
+
+A contribuição de ontologias específicas, como SSN (\textit{Semantic Sensor Network}) e SOSA (\textit{Sensor, Observation, Sample, and Actuator}), na IoT é explorada por \cite{Compton2012}. Eles discutem como essas ontologias proporcionam uma estrutura semântica para dados IoT, melhorando assim a interpretação e a aplicabilidade desses dados em diferentes contextos. A adoção dessas ontologias é essencial para padronizar a comunicação de dados e facilitar a interoperabilidade entre dispositivos IoT.
+
+Por fim, os desafios e as soluções na implementação de grafos de conhecimento em sistemas IoT são discutidos por \cite{Soldatos2015}. Eles apresentam uma perspectiva crítica sobre as barreiras técnicas enfrentadas, como a integração de dados heterogêneos e a necessidade de adotar padrões uniformes. O estudo também destaca estratégias para superar essas barreiras, sublinhando a importância de ferramentas e padrões adequados para a integração eficaz de grafos de conhecimento na IoT.

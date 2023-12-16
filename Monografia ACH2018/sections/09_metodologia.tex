@@ -1,0 +1,103 @@
+\chapter{Metodologia}
+
+\section{Introdução à Metodologia}
+
+No desenvolvimento do presente trabalho, foi adotada uma abordagem que articula conceitos e técnicas da engenharia de \textit{software}, ciência da computação e tecnologias semânticas e fim de lidar com a complexidade inerente à integração de WoTPy com grafos de conhecimento. 
+
+%Esta abordagem é adotada com o objetivo de abordar a complexidade inerente à integração do WoTPy com grafos de conhecimento, buscando otimizar a interoperabilidade e a interpretação de dados na Internet das Coisas (IoT).
+
+Do ponto de vista da engenharia de \textit{software}, a metodologia empregada enfatiza o desenvolvimento sistemático e a integração eficaz de sistemas. Esse aspecto do projeto envolve o planejamento detalhado, a definição de requisitos, a modelagem da arquitetura de \textit{software}, o desenvolvimento de código e a execução de testes. A aplicação dessas práticas de engenharia de \textit{software} permite que a solução desenvolvida seja robusta, escalável e adira altos padrões de qualidade, estando alinhada com as melhores práticas e padrões contemporâneos da indústria.
+
+ No âmbito da ciência da computação, a metodologia emprega fundamentos teóricos e técnicos para o tratamento de dados e a implementação de algoritmos capazes de manipular grafos de conhecimento. Isso inclui aprofundar-se em estruturas de dados complexas, algoritmos de processamento e análise de dados. Estes elementos são fundamentais para gerenciar a vasta quantidade de dados gerados pelos dispositivos IoT, garantindo processamento e análise eficientes.
+
+As tecnologias semânticas, particularmente as ontologias SSN (\textit{Semantic Sensor Network}) e SOSA (\textit{Sensor, Observation, Sample, and Actuator}), são fundamentais para a interpretação semântica dos dados IoT. Estas tecnologias permitem a modelagem e representação dos dados de forma que seu significado seja compreensível tanto para humanos quanto para máquinas. A utilização de RDF (\textit{Resource Description Framework}) e OWL (\textit{Web Ontology Language}), complementada por consultas SPARQL, facilita a criação de grafos de conhecimento que representam e inferem informações de maneira eficaz a partir dos dados IoT.
+
+\section{Análise de Requisitos}
+
+A análise de requisitos adotada para a integração do WoTPy com grafos de conhecimento, envolve a identificação e análise dos requisitos funcionais e não funcionais, para garantir a eficácia e a eficiência da solução proposta.
+
+\begin{itemize}
+    \item Requisitos Funcionais:
+    \begin{enumerate}
+        \item \textbf{Integração de Dados:} A capacidade do WoTPy de integrar dados de uma variedade de dispositivos IoT. Isso inclui o manejo de diferentes protocolos e formatos de dados, garantindo uma comunicação fluida e precisa entre dispositivos heterogêneos.
+        \item \textbf{Implementação de Grafos de Conhecimento:} O desenvolvimento de um sistema capaz de criar e gerenciar grafos de conhecimento. Estes grafos devem representar as relações e propriedades dos dispositivos IoT, fornecendo uma base sólida para a análise e interpretação de dados.
+        \item \textbf{Processamento de Consultas:} O sistema deve ser equipado com a funcionalidade de processar consultas SPARQL, permitindo a extração eficiente de informações relevantes dos grafos de conhecimento.
+        \item \textbf{Interpretação Semântica:} O WoTPy deve ser capaz de interpretar dados semânticos, utilizando ontologias como SSN e SOSA.
+        \item \textbf{Interface de Usuário:} O desenvolvimento de uma interface de usuário, que facilite a interação com o sistema de grafos de conhecimento, tornando-o acessível para usuários.
+    \end{enumerate}
+
+    \item Requisitos Não Funcionais:
+    \begin{enumerate}
+        \item \textbf{Escalabilidade:} O sistema deve ser projetado para escalar eficientemente, de modo a acomodar o crescimento contínuo no número de dispositivos e na quantidade de dados na rede IoT.
+        \item \textbf{Desempenho:} Alta performance, especialmente na manipulação e consulta dos grafos de conhecimento. O sistema deve garantir tempos de resposta rápidos e eficientes.
+        \item \textbf{Segurança:} É necessário implementar medidas de segurança para proteger os dados IoT e as operações de consulta, assegurando a integridade e a confidencialidade dos dados.
+        \item \textbf{Confiabilidade:} O sistema deve ser confiável, fornecendo informações precisas e consistentes, essenciais para a tomada de decisões baseadas em dados.
+        \item \textbf{Manutenibilidade:} A facilidade de manutenção e a capacidade de atualizar o sistema são cruciais para se adaptar a novos requisitos e tecnologias emergentes na área de IoT.
+    \end{enumerate}
+\end{itemize}
+
+\section{Desenvolvimento de Grafos de Conhecimento}
+
+Neste projeto, a construção de grafos de conhecimento na Internet das Coisas (IoT) é abordada através de uma metodologia que combina ontologias padronizadas e técnicas de modelagem. A utilização de ontologias como \textit{Semantic Sensor Network} (SSN) e \textit{Sensor, Observation, Sample, and Actuator} (SOSA) é crucial na estruturação de dados oriundos de dispositivos IoT. Estas ontologias são escolhidas por sua capacidade de representar de maneira abrangente e coerente os dados de sensores e atuadores. Este enfoque é suportado por estudos como o de \cite{Compton2012} e \cite{Haller2017}, que discutem a aplicação de ontologias para melhorar a semântica e a utilidade dos dados na IoT.
+
+A modelagem dos grafos de conhecimento inicia com a definição de entidades, tais como dispositivos, sensores e atuadores, e as relações entre eles. Esta etapa envolve a identificação detalhada de como estas entidades interagem entre si e com o ambiente IoT. A aplicação das ontologias SSN e SOSA ajuda a categorizar e relacionar as entidades de forma a refletir suas funções e interações reais dentro do ecossistema IoT. Posteriormente, cria-se o esquema de grafo que serve como um modelo para a estruturação dos dados no grafo de conhecimento. Este esquema é vital para garantir que todas as informações sejam organizadas de maneira lógica e eficiente, conforme discutido por \cite{Hitzler2010}.
+
+Para a implementação dos grafos de conhecimento, são empregadas ferramentas como o \textit{Resource Description Framework} (RDF) e a \textit{Web Ontology Language} (OWL). Estas tecnologias são fundamentais para criar modelos semânticos robustos que possam representar com precisão os dados da IoT. A inserção de dados no grafo envolve a conversão de dados brutos dos dispositivos IoT para o formato compatível com o modelo RDF/OWL, um processo que garante a integridade semântica dos dados, conforme descrito por \cite{Antoniou2004}. Após a inserção dos dados, uma validação é realizada para assegurar que a representação no grafo esteja semanticamente correta e consistente com as ontologias aplicadas, um processo destacado por \cite{Corcho2003}. Finalmente, os grafos de conhecimento são integrados com o WoTPy, desenvolvendo interfaces e mecanismos que facilitam a comunicação entre o sistema de grafos e o \textit{gateway} IoT.
+
+\section{Integração do WoTPy com Grafos de Conhecimento}
+
+A integração do WoTPy com grafos de conhecimento, está exemplificado no código disponível no repositório GitHub \footnote{\url{https://github.com/T16K/wot-py/blob/develop/examples/uv_sensor/server.py}}. Esta integração envolve várias etapas técnicas, incluindo a configuração do grafo de conhecimento, definição de dispositivos IoT (\textit{Things}), além da implementação de \textit{handlers} e corotinas para a leitura e escrita de dados.
+
+Inicialmente, o grafo de conhecimento é configurado utilizando as bibliotecas rdflib e rdflib.plugins.stores, com o \textit{backend} BerkeleyDB, para o mecanismo de persistência. Este grafo armazena informações semânticas de dispositivos IoT, empregando ontologias SSN e SOSA para uma estruturação coerente dos dados. Esta configuração é necessária para armazenar e gerenciar informações semânticas, estabelecendo uma base para dados significativos e interconectados.
+
+Na definição do ``\textit{Thing}'' no WoTPy, um dispositivo IoT específico é descrito com suas propriedades e funcionalidades. Esta definição é essencial para a integração do dispositivo com o grafo de conhecimento, permitindo que o dispositivo e suas métricas sejam adequadamente representados e gerenciados dentro do sistema.
+
+Para a interação com o grafo de conhecimento, um servidor Tornado é implementado para gerenciar as requisições SPARQL. Estes \textit{handlers} são fundamentais para permitir consultas e interações com o grafo de conhecimento, facilitando a extração e análise de informações semânticas armazenadas.
+
+Notavelmente, quando os dados são gravados, as informações correspondentes são adicionadas ao grafo de conhecimento como novas observações de forma persistente. Isso integra os dados do sensor ao grafo, permitindo uma análise mais contextualizada dos dados.
+
+Além disso, o grafo de conhecimento é capaz de serializar e exibir os dados no formato Turtle, o que facilita a visualização e verificação da estrutura dos dados e das relações semânticas. A integração do WoTPy com o grafo de conhecimento é finalizada com a inicialização do servidor e a configuração para expor o ``Thing'' definido, juntamente com a ativação do servidor HTTP personalizado e do servidor SPARQL.
+
+A comunicação entre o WoTPy e o grafo de conhecimento ocorre através das operações de leitura e escrita de dados e das consultas SPARQL. Esta integração permite que o WoTPy não apenas reaja aos dados dos sensores, mas também acesse e utilize dados semânticos para análises mais informadas e decisões baseadas em dados. Este processo de integração, demonstra a expansão das capacidades para além da coleta de dados e possibilitando uma interpretação semântica e interações com dispositivos IoT.
+
+\section{Desenvolvimento de um Modelo RDF/OWL}
+
+No cerne da integração do WoTPy com grafos de conhecimento, está a definição de entidades e relações usando RDF (\textit{Resource Description Framework}) e OWL (\textit{Web Ontology Language}). Estas tecnologias são empregadas para definir entidades como sensores, atuadores e suas observações, estabelecendo uma base para dados semânticos estruturados. A utilização de RDF e OWL possibilita a criação de classes e propriedades que representam de maneira fiel os dispositivos IoT e suas interações. Esta modelagem é crucial, pois estabelece a estrutura para a representação de dados de sensores e atuadores na IoT, permitindo uma análise aprofundada e uma gestão eficiente dos dados.
+
+As ontologias padrão (SSN e SOSA) são escolhidas por serem amplamente reconhecidas e adotadas para descrever sensores e suas observações na IoT. Elas oferecem um vocabulário extenso e uma estrutura que facilita a representação de dados de sensores e atuadores de maneira coerente e padronizada. A aplicação dessas ontologias é importante na construção do modelo RDF/OWL, pois fornece um \textit{framework} para a representação semântica.
+
+Além da modelagem semântica, a integração do modelo RDF/OWL com o WoTPy é realizada de forma a permitir que o sistema gerencie e manipule os dados de forma semântica. Isso é alcançado através da integração do modelo RDF/OWL ao grafo de conhecimento gerenciado pelo RDFLib. As informações sobre os dispositivos IoT e suas observações são armazenadas no grafo, e o WoTPy é configurado para acessar e manipular esses dados. A interface de comunicação, facilitada pela interface SPARQL e pelas corotinas de leitura e escrita, permite que o WoTPy interaja com o grafo de conhecimento, realizando consultas e atualizações nos dados conforme necessário.
+
+\section{Implementação de um Endpoint SPARQL}
+
+A criação de um \textit{endpoint} SPARQL, como parte integrante do projeto, envolve a configuração de um servidor \textit{web}, a implementação de um \textit{handler} específico para SPARQL e o desenvolvimento de funcionalidades que permitem a execução e o retorno de consultas SPARQL, além de sua integração com o WoTPy.
+
+Utilizando o \textit{framework} Tornado, foi configurado um servidor \textit{web} para hospedar o endpoint SPARQL. Este servidor desempenha um papel de gerenciamento de requisições HTTP associadas a consultas SPARQL, para a interação baseada em SPARQL. A implementação de um \textit{handler} específico, é responsável por receber consultas SPARQL, executá-las no grafo de conhecimento e retornar os resultados em um formato apropriado, como JSON, facilitando a interpretação e a integração com outras plataformas.
+
+As funcionalidades do endpoint SPARQL incluem a execução de consultas SPARQL, permitindo que usuários ou sistemas enviem requisições que são processadas para extrair informações específicas do grafo de conhecimento. Esta capacidade  permite a realização de consultas, envolvendo múltiplas entidades e relações. Além disso, os resultados dessas consultas são serializados em formatos padrão, como JSON ou XML, o que garante a compatibilidade e a facilidade de integração com uma variedade de aplicações e sistemas de análise de dados.
+
+Esta integração permite que os dados coletados por dispositivos IoT sejam consultados de maneira semântica, enriquecendo as capacidades analíticas do WoTPy. Além disso, à medida que novos dados são coletados e registrados pelo WoTPy, eles são automaticamente disponibilizados para consulta no endpoint SPARQL, assegurando que as informações mais recentes estejam acessíveis.
+
+Adicionalmente, o \textit{endpoint} SPARQL facilita a integração do WoTPy com aplicações ou sistemas externos, ampliando o escopo de utilização dos dados IoT. Esta integração torna possível a utilização de dados IoT em diversos contextos, desde monitoramento ambiental até automação residencial, demonstrando a versatilidade e a aplicabilidade prática do sistema.
+
+\section{Testes e Validação}
+
+Dentro do escopo deste projeto, que visa a integração do WoTPy com grafos de conhecimento na Internet das Coisas (IoT), uma série de testes de funcionalidade foi planejada e executada. Estes testes foram necessários para assegurar a integração e o funcionamento correto do sistema como um todo, abrangendo desde a validação da integração entre os componentes até a verificação da precisão das consultas SPARQL e da funcionalidade da interface de usuário.
+
+Um dos aspectos testados é a validação da integração entre o WoTPy e os grafos de conhecimento. Este teste foca em garantir que os dados coletados dos dispositivos IoT, bem como as observações geradas, sejam corretamente inseridos e recuperados do grafo de conhecimento. Dessa forma, é possível confirmar que o sistema não apenas coleta, mas também processa e armazena dados de forma precisa.
+
+Outro teste crucial é o das consultas SPARQL realizadas pelo \textit{endpoint}. Aqui, o objetivo é verificar se as consultas SPARQL são executadas corretamente, retornando resultados precisos. Este teste é importante para assegurar que o endpoint SPARQL funcione como esperado, fornecendo acesso aos dados semânticos armazenados no grafo de conhecimento.
+
+Por fim, alguns testes são realizados na interface de usuário. Estes testes envolvem avaliar se as funcionalidades fornecidas pela interface de usuário estão operando conforme o esperado. É crucial que a interface de usuário seja intuitiva e funcional, permitindo que os usuários interajam eficazmente com o sistema, realizem consultas e visualizem dados de forma acessível.
+
+\section{Documentação}
+
+ A estrutura da documentação deste sistema é planejada para fornecer uma visão abrangente e instruções práticas, facilitando a compreensão e a implementação do sistema por usuários e desenvolvedores.
+
+A visão geral do sistema foi apresentado no GitHub \footnote{\url{https://github.com/T16K/wot-py/blob/develop/examples/uv_sensor}}, delineando o propósito do sistema, os componentes-chave e como eles interagem entre si. Esta seção oferece um panorama do WoTPy, dos grafos de conhecimento e da integração SPARQL, estabelecendo um contexto claro para os usuários e fornecendo uma compreensão básica do funcionamento geral do sistema.
+
+O guia de instalação e configuração fornece passos detalhados para a instalação e configuração do sistema. Esta seção inclui informações sobre os requisitos de \textit{software} necessários, a configuração do ambiente de desenvolvimento e a inicialização dos serviços relacionados.
+
+Na seção de explicação dos componentes principais, os usuários encontram descrições detalhadas dos principais componentes do sistema, como o modelo RDF/OWL, o \textit{endpoint} SPARQL e a interação entre o WoTPy e o grafo de conhecimento. Esta parte da documentação é crucial para fornecer uma compreensão aprofundada de cada componente, explicando sua funcionalidade, importância e como eles se integram dentro do sistema.
+
+Para ilustrar a aplicabilidade do sistema, é apresentado um exemplo prático. Este cenário detalha como o sistema pode ser utilizado, por exemplo, para monitorar e analisar dados de um sensor UV em um ambiente IoT \cite{Ariga2023}, além de demonstrar a configuração do WoTPy, a criação e consulta de grafos de conhecimento e a integração em um cenário de IoT real. Adicionalmente, as instruções guiam o usuário através da execução do exemplo, desde a configuração inicial até a análise dos resultados.

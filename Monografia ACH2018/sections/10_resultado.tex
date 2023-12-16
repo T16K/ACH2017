@@ -1,0 +1,31 @@
+\chapter{Resultados}
+
+\section{Integração do WoTPy com Grafos de Conhecimento}
+
+A integração do WoTPy com grafos de conhecimento na Internet das Coisas (IoT) foi realizada através de uma série de etapas, começando com a configuração de um grafo de conhecimento e culminando na melhoria da interpretação semântica e na interoperabilidade dos dados.
+
+Inicialmente, o grafo de conhecimento foi configurado utilizando RDFLib, e BerkeleyDB para o mecanismo de persistência. Esta configuração foi fundamentada nas ontologias SSN (\textit{Semantic Sensor Network}) e SOSA (\textit{Sensor, Observation, Sample, and Actuator}), que forneceram uma estrutura semântica para representar dados de dispositivos IoT.
+
+Dentro do contexto do WoTPy, foi desenvolvido um ``\textit{Thing}'' que representava um sensor UV. Este ``Thing'' foi definido com propriedades e funcionalidades em conformidade com o modelo RDF/OWL, integrando-o efetivamente ao grafo de conhecimento. Essa integração permitiu que os dados coletados fossem automaticamente registrados e semantizados no grafo, tornando-os acessíveis para consultas e análises subsequentes.
+
+A modelagem do grafo de conhecimento envolveu a definição detalhada de classes, propriedades e relações dentro do RDF/OWL para representar os elementos do IoT, como sensores e suas leituras. Essa modelagem foi importante para criar uma base de dados para a interpretação e análise dos dados.
+
+Além disso, a implementação de um \textit{endpoint} SPARQL dentro de um servidor Tornado proporcionou um meio eficiente de acessar e interagir com os dados semânticos armazenados no grafo de conhecimento. Através deste \textit{endpoint}, foi possível realizar consultas complexas, facilitando assim a análise aprofundada dos dados coletados dos dispositivos IoT.
+
+Os benefícios da integração do WoTPy com os grafos de conhecimento são significativos. Um dos principais benefícios é a melhoria na interpretação semântica dos dados. Com a implementação do modelo RDF/OWL e a utilização das ontologias SSN e SOSA, o sistema foi capaz de ir além do simples armazenamento de dados, permitindo uma compreensão profunda de suas relações e significados. Esta interpretação semântica dos dados coletados dos dispositivos IoT permite uma análise mais contextual e detalhada, para a tomada de decisões informadas e para o desenvolvimento de aplicações IoT mais inteligentes e responsivas.
+
+Além disso, o sistema desenvolvido demonstrou capacidades analíticas de realizar consultas e extrair relações dos dados IoT. Esta capacidade analítica é uma melhoria significativa em relação ao WoTPy padrão, permitindo que o sistema não apenas colete dados, mas também os analise de forma mais eficiente e informativa.
+
+\section{Desempenho do Modelo RDF/OWL}
+
+A implementação do modelo RDF/OWL no contexto deste projeto de integração com o WoTPy na Internet das Coisas (IoT) apresentou resultados notáveis, destacando-se pela representação de dados e pela capacidade de execução de consultas SPARQL.
+
+A implementação mostrou uma capacidade de representar com precisão os dados dos dispositivos IoT. As entidades e relações definidas no grafo de conhecimento refletiram as características e as interações dos dispositivos, como sensores e atuadores. Este modelo não só facilitou a organização e o armazenamento de dados, mas também tornou-os mais acessíveis e interpretáveis. A estruturação dos dados em um formato semântico permitiu uma representação mais detalhada dos dispositivos e suas interações. As consultas processadas pelo sistema foram capazes de extrair informações, demonstrando a eficiência do modelo RDF/OWL. 
+
+\section{Funcionalidade e Benefícios do Endpoint SPARQL}
+
+A funcionalidade do \textit{endpoint} SPARQL, demonstrou ser funcional. Esta eficácia foi validada não apenas pela execução bem-sucedida de consultas, mas também pela facilidade de acesso e análise dos dados, bem como pela melhoria na análise semântica de dados.
+
+A funcionalidade do \textit{endpoint} SPARQL foi validada através da execução de várias consultas. Por exemplo, uma das consultas realizadas buscou extrair as médias de leituras de sensores durante um período específico. Esta consulta não só demonstrou a capacidade do \textit{endpoint} de lidar com agregações e filtragens, mas também ilustrou sua habilidade em processar e retornar informações significativas. Estas análises forneceram uma compreensão aprofundada dos dados coletados, revelando informações valiosas que poderiam ser aplicadas para otimizar o desempenho dos dispositivos e aprimorar a tomada de decisões.
+
+A interface intuitiva para consultas no \textit{endpoint} SPARQL, tornou a realização de consultas complexas acessível até mesmo para usuários com conhecimento técnico limitado. Esta acessibilidade transformou o sistema, tornando-o mais amigável e aumentando significativamente a usabilidade dos dados IoT. Ao simplificar o acesso aos dados e permitir a realização de consultas avançadas de maneira fácil, o sistema abriu novas possibilidades para uma variedade de usuários, desde especialistas em dados até usuários finais interessados em informações específicos de IoT.
